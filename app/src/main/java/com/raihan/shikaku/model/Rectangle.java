@@ -1,19 +1,47 @@
 package com.raihan.shikaku.model;
 
-import android.graphics.Rect;
-
 public class Rectangle {
-    private Rect rect;
+    private int startRow;//left || start x
+    private int startCol;//top || start y
+    private int endRow;//right || end x
+    private int endCol;//bottom || end y
 
-    public Rectangle(Rect rect) {
-        this.rect = rect;
+    public Rectangle(int startRow, int startCol, int endRow, int endCol) {
+        this.startRow = startRow;
+        this.endRow = endRow;
+        this.startCol = startCol;
+        this.endCol = endCol;
     }
 
-    public Rect getRect() {
-        return rect;
+    public int getStartRow() {
+        return startRow;
     }
 
-    public void setRect(Rect rect) {
-        this.rect = rect;
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
+
+    public int getEndRow() {
+        return endRow;
+    }
+
+    public void setEndRow(int endRow) {
+        this.endRow = endRow;
+    }
+
+    public int getStartCol() {
+        return startCol;
+    }
+
+    public void setStartCol(int startCol) {
+        this.startCol = startCol;
+    }
+
+    public int getEndCol() {
+        return endCol;
+    }
+
+    public void setEndCol(int endCol) {
+        this.endCol = endCol;
     }
 }

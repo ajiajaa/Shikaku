@@ -5,25 +5,20 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.raihan.shikaku.R;
 
 import java.util.ArrayList;
 
-public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView implements View.OnTouchListener{
+public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView implements View.OnTouchListener {
 
 //    untuk menggambar
     private Bitmap mBitmap;
@@ -45,7 +40,6 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView im
 
     private  final ArrayList<Rectangle> rectList = new ArrayList<>();// menyimpan rectangle yang dibuat user
     private int[][] cellNumbers;// mengolah angka dari resource
-
 
     public BoardCanvas(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -129,10 +123,40 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView im
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
 
+
         for(int i= 0; i<rectList.size(); i++){
-            mCanvas.drawRect(rectList.get(i).getRect(), paint);
+            int left= rectCoordinateRow(true,10,
+                    rectList.get(i).getStartRow(),
+                    rectList.get(i).getEndRow());
+            int top= rectCoordinateCol(true, 10,
+                    rectList.get(i).getStartCol(),
+                    rectList.get(i).getEndCol());
+            int right= rectCoordinateRow(false, 10,
+                    rectList.get(i).getStartRow(),
+                    rectList.get(i).getEndRow());
+            int bottom= rectCoordinateCol(false, 10,
+                    rectList.get(i).getStartCol(),
+                    rectList.get(i).getEndCol());
+
+            mCanvas.drawRect(left, top, right, bottom, paint);
         }
 
+    }
+
+    private int rectCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
+        if(isStart){
+            return offsetY + add + Math.min(startCol, endCol) * cellSize;
+        }else{
+            return offsetY - add + (Math.max(startCol, endCol) + 1) * cellSize;
+        }
+    }
+
+    private int rectCoordinateRow(boolean isStart, int add, int startRow, int endRow) {
+        if(isStart){
+            return offsetX + add + Math.min(startRow, endRow) * cellSize;
+        }else{
+            return offsetX - add + (Math.max(startRow, endRow) + 1) * cellSize;
+        }
     }
 
     public void setGridSize(int gridSize) {
@@ -182,46 +206,78 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView im
                 return true;
             case MotionEvent.ACTION_UP:
 //                 tangani ketika melepaskan sentuhan
-                handleRelease(e);
+                onPlay(e, true);
                 return true;
             case MotionEvent.ACTION_MOVE:
-//                handleMove(event);
+                onPlay(e, false);
                 return true;
             default:
                 return super.onTouchEvent(e);
         }
     }
 
-    private void handleRelease(MotionEvent e) {
+
+    private void onPlay(MotionEvent e, boolean isUp) {
 //        Log.d("TAG", "start: "+start.x+", "+start.y);
 //        Log.d("TAG", "end "+e.getX()+" "+e.getY());
 
+        if(start.x!=e.getX() && start.y!=e.getY()){
+            int startRow = coordinateConvert(start.x);
+            int startCol = coordinateConvert(start.y);
+            int endRow = coordinateConvert(e.getX());
+            int endCol = coordinateConvert(e.getY());
 
-        int startRow = (int) (start.x / cellSize);
-        int startCol = (int) (start.y/ cellSize);
-        int endRow = (int) (e.getX() / cellSize);
-        int endCol = (int) (e.getY() / cellSize);
+            startRow= checkMax(startRow);
+            startCol= checkMax(startCol);
+            endRow= checkMax(endRow);
+            endCol= checkMax(endCol);
 
-        startRow= checkMax(startRow);
-        startCol= checkMax(startCol);
-        endRow= checkMax(endRow);
-        endCol= checkMax(endCol);
+            startRow= checkMin(startRow);
+            startCol= checkMin(startCol);
+            endRow= checkMin(endRow);
+            endCol= checkMin(endCol);
 
-        startRow= checkMin(startRow);
-        startCol= checkMin(startCol);
-        endRow= checkMin(endRow);
-        endCol= checkMin(endCol);
+            if(isUp){
+                Rectangle rect= new Rectangle(startRow, startCol, endRow, endCol);
+                rectList.add(rect);
+            }else{
+                Paint paint = new Paint();
+                paint.setColor(Color.GRAY);
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeWidth(strokeWidth);
+                paint.setStrokeJoin(Paint.Join.ROUND);
+                paint.setStrokeCap(Paint.Cap.ROUND);
 
-        int left = offsetX + Math.min(startRow, endRow) * cellSize;
-        int top = offsetY + Math.min(startCol, endCol) * cellSize;
-        int right = offsetX + (Math.max(startRow, endRow) + 1) * cellSize;
-        int bottom = offsetY + (Math.max(startCol, endCol) + 1) * cellSize;
-        Log.d("TAG", "handleRelease: "+startRow+", "+startCol+", "+endRow+", "+endCol);
+                int left = rectCoordinateRow(true, 10, startRow, endRow);
+                int top = rectCoordinateCol(true, 10, startCol, endCol);
+                int right = rectCoordinateRow(false, 10, startRow, endRow);
+                int bottom = rectCoordinateCol(false, 10, startCol, endCol);
 
-        Rect rect= new Rect(left, top, right, bottom);
-        Rectangle rectangle= new Rectangle(rect);
+                mCanvas.drawRect(left, top, right, bottom, paint);
 
-        rectList.add(rectangle);
+                int leftCheck = rectCoordinateRow(true, 0, startRow, endRow);
+                int topCheck = rectCoordinateCol(true, 0, startCol, endCol);
+                int rightCheck = rectCoordinateRow(false, 0, startRow, endRow);
+                int bottomCheck = rectCoordinateCol(false, 0, startCol, endCol);
+
+                int length= rightCheck-leftCheck;
+                length/=cellSize;
+
+                int width= bottomCheck-topCheck;
+                width/=cellSize;
+
+                length*= width;
+
+
+                Log.d("TAG", "handleRelease: "+leftCheck+", "+topCheck+", "+rightCheck+", "+bottomCheck+": "+length);
+            }
+
+        }
+
+    }
+
+    private int coordinateConvert(float x) {
+        return (int) (x / cellSize);
     }
 
     private int checkMin(int input) {
