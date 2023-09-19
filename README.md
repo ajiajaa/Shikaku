@@ -11,3 +11,6 @@ Task list :
      - dll
 5. UI
 6. MVP Architecture (Done! selesai deluan biar ga ribet nantinya)
+
+Aplikasi dapat di-download sesuai progress yang sudah di-push pada repository ini:
+[Link download](https://drive.google.com/file/d/1_UUN3hGmHS0rcdxfuGLXfjzZS1ROUCOR/view?usp=sharing)
