@@ -9,3 +9,4 @@ Task list :
      - sound
      - dll
 4. UI
+5. MVP Architecture (Done! selesai deluan biar ga ribet nantinya)
