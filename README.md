@@ -13,7 +13,7 @@ Task list :
 6. MVP Architecture (Done! diprioritaskan agar mempermudah pengerjaan)
 
 Aplikasi dapat di-download sesuai progress yang sudah di-push pada repository ini:
-[Link download](https://drive.google.com/file/d/1_UUN3hGmHS0rcdxfuGLXfjzZS1ROUCOR/view?usp=sharing)
+[Link download](https://drive.google.com/file/d/1Sej0dfLhXPYAJ8QlPHWl21ga1VrxoU_n/view?usp=sharing)
 
 Tested :
 - Android 13 (Poco F3) : safe
