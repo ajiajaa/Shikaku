@@ -1,4 +1,4 @@
-package com.raihan.shikaku.model;
+package com.raihan.shikaku.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -34,19 +34,16 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
 
     public BoardCanvas(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        setWillNotDraw(false);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (getWidth() == 0 || getHeight() == 0) {
-            return;
-        }
-
+    }
+    public void background(){
         this.width = this.getWidth();
         this.height = this.getHeight();
-        Log.d("TAG", "onDraw: "+width+height);
+//        Log.d("TAG", "onDraw: "+width+height);
 
         this.mBitmap = Bitmap.createBitmap(
                 width, height, Bitmap.Config.ARGB_8888);
@@ -56,7 +53,6 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         int mColorBackground = ResourcesCompat.getColor(getResources(), R.color.white, null);
         this.mCanvas.drawColor(mColorBackground);
     }
-
     public void drawBoard(int left, int top, int right, int bottom) {
         //          style gambar grid
         Paint paint = new Paint();
@@ -64,7 +60,6 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         paint.setStyle(Paint.Style.STROKE);
 
         //                  gambar border sel
-        Log.d("TAG", "drawBoard: "+left+", "+top+", "+right+", "+bottom);
         mCanvas.drawRect(left, top, right, bottom, paint);
 
     }
@@ -103,5 +98,6 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         paint.setStrokeCap(Paint.Cap.ROUND);
 
         mCanvas.drawRect(left, top, right, bottom, paint);
+        invalidate();
     }
 }

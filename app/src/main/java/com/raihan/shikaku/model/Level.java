@@ -3,8 +3,8 @@ package com.raihan.shikaku.model;
 public class Level {
     private int[][] cellNumbers;
 
-    public Level() {
-        this.cellNumbers= new int[5][5];
+    public Level(int gridSize) {
+        this.cellNumbers= new int[gridSize][gridSize];
         fillCells();
     }
 

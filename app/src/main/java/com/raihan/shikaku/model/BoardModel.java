@@ -44,30 +44,28 @@ public class BoardModel implements BoardContract.Model {
 //        Log.d("TAG", "end "+e.getX()+" "+e.getY());
 
         HashMap<String, Integer> hm= new HashMap<>();
-        if(start.x!=e1 && start.y!=e2){
-            int startRow = coordinateConvert(start.x);
-            int startCol = coordinateConvert(start.y);
-            int endRow = coordinateConvert(e1);
-            int endCol = coordinateConvert(e2);
 
-            startRow= checkMax(startRow);
-            startCol= checkMax(startCol);
-            endRow= checkMax(endRow);
-            endCol= checkMax(endCol);
+        int startRow = coordinateConvert(start.x);
+        int startCol = coordinateConvert(start.y);
+        int endRow = coordinateConvert(e1);
+        int endCol = coordinateConvert(e2);
 
-            startRow= checkMin(startRow);
-            startCol= checkMin(startCol);
-            endRow= checkMin(endRow);
-            endCol= checkMin(endCol);
+        startRow= checkMax(startRow);
+        startCol= checkMax(startCol);
+        endRow= checkMax(endRow);
+        endCol= checkMax(endCol);
 
-            hm.put("startRow", startRow);
-            hm.put("startCol", startCol);
-            hm.put("endRow", endRow);
-            hm.put("endCol", endCol);
+        startRow= checkMin(startRow);
+        startCol= checkMin(startCol);
+        endRow= checkMin(endRow);
+        endCol= checkMin(endCol);
 
-            return hm;
-        }
-        return null;
+        hm.put("startRow", startRow);
+        hm.put("startCol", startCol);
+        hm.put("endRow", endRow);
+        hm.put("endCol", endCol);
+
+        return hm;
     }
 
     @Override
@@ -82,7 +80,6 @@ public class BoardModel implements BoardContract.Model {
         hm.put("offsetX", offsetX);
         hm.put("offsetY", offsetY);
         hm.put("cellSize", cellSize);
-        hm.put("gridSize", gridSize);
 
         return hm;
 
@@ -92,54 +89,13 @@ public class BoardModel implements BoardContract.Model {
     @Override
     public void getWidth(int width) {
         this.width= width;
+        Log.d("TAG", "getWidth: "+width);
     }
 
     @Override
     public void getHeight(int height) {
         this.height= height;
     }
-
-//    public void drawSelectedCell() {
-//        Paint paint = new Paint();
-//        paint.setColor(Color.BLACK);
-//        paint.setStyle(Paint.Style.STROKE);
-//        paint.setStrokeWidth(strokeWidth);
-//
-//
-//        for(int i= 0; i<rectList.size(); i++){
-//            int left= rectCoordinateRow(true,10,
-//                    rectList.get(i).getStartRow(),
-//                    rectList.get(i).getEndRow());
-//            int top= rectCoordinateCol(true, 10,
-//                    rectList.get(i).getStartCol(),
-//                    rectList.get(i).getEndCol());
-//            int right= rectCoordinateRow(false, 10,
-//                    rectList.get(i).getStartRow(),
-//                    rectList.get(i).getEndRow());
-//            int bottom= rectCoordinateCol(false, 10,
-//                    rectList.get(i).getStartCol(),
-//                    rectList.get(i).getEndCol());
-//
-//            mCanvas.drawRect(left, top, right, bottom, paint);
-//        }
-//
-//    }
-
-//    private int rectCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
-//        if(isStart){
-//            return offsetY + add + Math.min(startCol, endCol) * cellSize;
-//        }else{
-//            return offsetY - add + (Math.max(startCol, endCol) + 1) * cellSize;
-//        }
-//    }
-//
-//    private int rectCoordinateRow(boolean isStart, int add, int startRow, int endRow) {
-//        if(isStart){
-//            return offsetX + add + Math.min(startRow, endRow) * cellSize;
-//        }else{
-//            return offsetX - add + (Math.max(startRow, endRow) + 1) * cellSize;
-//        }
-//    }
 
 
     private int coordinateConvert(float x) {

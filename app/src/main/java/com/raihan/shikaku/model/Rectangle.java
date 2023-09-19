@@ -1,47 +1,47 @@
 package com.raihan.shikaku.model;
 
 public class Rectangle {
-    private int startRow;//left || start x
-    private int startCol;//top || start y
-    private int endRow;//right || end x
-    private int endCol;//bottom || end y
+    private int left;//left || start x
+    private int top;//top || start y
+    private int right;//right || end x
+    private int bottom;//bottom || end y
 
-    public Rectangle(int startRow, int startCol, int endRow, int endCol) {
-        this.startRow = startRow;
-        this.endRow = endRow;
-        this.startCol = startCol;
-        this.endCol = endCol;
+    public Rectangle(int left, int top, int right, int bottom) {
+        this.left = left;
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
     }
 
-    public int getStartRow() {
-        return startRow;
+    public int getLeft() {
+        return left;
     }
 
-    public void setStartRow(int startRow) {
-        this.startRow = startRow;
+    public void setLeft(int left) {
+        this.left = left;
     }
 
-    public int getEndRow() {
-        return endRow;
+    public int getTop() {
+        return top;
     }
 
-    public void setEndRow(int endRow) {
-        this.endRow = endRow;
+    public void setTop(int top) {
+        this.top = top;
     }
 
-    public int getStartCol() {
-        return startCol;
+    public int getRight() {
+        return right;
     }
 
-    public void setStartCol(int startCol) {
-        this.startCol = startCol;
+    public void setRight(int right) {
+        this.right = right;
     }
 
-    public int getEndCol() {
-        return endCol;
+    public int getBottom() {
+        return bottom;
     }
 
-    public void setEndCol(int endCol) {
-        this.endCol = endCol;
+    public void setBottom(int bottom) {
+        this.bottom = bottom;
     }
 }

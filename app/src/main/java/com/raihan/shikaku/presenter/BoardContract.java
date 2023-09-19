@@ -12,8 +12,10 @@ public interface BoardContract {
     interface View {
         void drawBoard(int left, int top, int right, int bottom);
         void drawNumbers(int angka, int left, int top, int right, int bottom);
-        void drawSelectedCell(List<Rectangle> rectList);
+        void setSelectedCell(List<Rectangle> rectList);
         void drawOnMoveSelectedCell(int left, int top, int right, int bottom);
+        void cellCounter(int ctr);
+        void getCellSize(int cellSize);
     }
 
     interface Presenter {
