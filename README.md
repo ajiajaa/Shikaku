@@ -10,7 +10,7 @@ Task list :
      - sound
      - dll
 5. UI
-6. MVP Architecture (Done! selesai deluan biar ga ribet nantinya)
+6. MVP Architecture (Done! diprioritaskan agar mempermudah pengerjaan)
 
 Aplikasi dapat di-download sesuai progress yang sudah di-push pada repository ini:
 [Link download](https://drive.google.com/file/d/1_UUN3hGmHS0rcdxfuGLXfjzZS1ROUCOR/view?usp=sharing)
