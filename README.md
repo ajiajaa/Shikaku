@@ -1,9 +1,9 @@
 # Shikaku
 Repositori untuk menuntaskan tugas akhir
-
+Progress at 75% (kinda).
 Task list :
-1. Buat rectangle bisa tumpang tindih dimana bila tumpang tindih rectangle sebelumnya akan hilang.
-2. checker/solver
+1. Buat rectangle bisa tumpang tindih dimana bila tumpang tindih rectangle sebelumnya akan hilang. (Done! 13/12/2023)
+2. checker/solver (Done! 13/12/2023)
 3. assign real numbers with txt buffer (still on dummies data)
 4. additional features :
      - timer
@@ -13,7 +13,6 @@ Task list :
 6. MVP Architecture (Done! diprioritaskan agar mempermudah pengerjaan)
 
 Aplikasi dapat di-download sesuai progress yang sudah di-push pada repository ini:
-[Link download](https://drive.google.com/file/d/1Sej0dfLhXPYAJ8QlPHWl21ga1VrxoU_n/view?usp=sharing)
 
 Tested :
 - Android 13 (Poco F3) : safe
