@@ -40,15 +40,13 @@ public class BoardModel implements BoardContract.Model {
 
     @Override
     public HashMap<String, Integer> getRectangleCoordinates(PointF start, float e1, float e2) {
-//        Log.d("TAG", "start: "+start.x+", "+start.y);
-//        Log.d("TAG", "end "+e.getX()+" "+e.getY());
 
         HashMap<String, Integer> hm= new HashMap<>();
 
-        int startRow = coordinateConvert(start.x);
-        int startCol = coordinateConvert(start.y);
-        int endRow = coordinateConvert(e1);
-        int endCol = coordinateConvert(e2);
+        int startRow = coordinateConvert(start.y);
+        int startCol = coordinateConvert(start.x);
+        int endRow = coordinateConvert(e2);
+        int endCol = coordinateConvert(e1);
 
         startRow= checkMax(startRow);
         startCol= checkMax(startCol);
@@ -81,6 +79,9 @@ public class BoardModel implements BoardContract.Model {
         hm.put("offsetY", offsetY);
         hm.put("cellSize", cellSize);
 
+        Log.d("TAG", "calculateBoard: offx "+offsetX);
+        Log.d("TAG", "calculateBoard: offy "+offsetY);
+
         return hm;
 
 
@@ -89,12 +90,12 @@ public class BoardModel implements BoardContract.Model {
     @Override
     public void getWidth(int width) {
         this.width= width;
-        Log.d("TAG", "getWidth: "+width);
     }
 
     @Override
     public void getHeight(int height) {
         this.height= height;
+
     }
 
 

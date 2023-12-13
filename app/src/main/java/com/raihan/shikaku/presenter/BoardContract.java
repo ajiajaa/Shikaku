@@ -4,6 +4,7 @@ import android.graphics.PointF;
 
 import com.raihan.shikaku.model.Rectangle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,7 +16,8 @@ public interface BoardContract {
         void setSelectedCell(List<Rectangle> rectList);
         void drawOnMoveSelectedCell(int left, int top, int right, int bottom);
         void cellCounter(int ctr);
-        void getCellSize(int cellSize);
+        void overlapChecker(boolean isOverlap);
+        void onToastResult(boolean isValid);
     }
 
     interface Presenter {
@@ -25,7 +27,7 @@ public interface BoardContract {
         void onProcessSelectedCell();
         void sendWidth(int width);
         void sendHeight(int height);
-
+        void sendRectangles();
     }
 
     interface Model {
@@ -34,6 +36,10 @@ public interface BoardContract {
         HashMap<String, Integer> calculateBoard();
         void getWidth(int width);
         void getHeight(int height);
+    }
+
+    interface CheckerListener{
+        void sendResult(boolean isValid);
     }
 }
 

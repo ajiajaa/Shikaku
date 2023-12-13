@@ -6,13 +6,14 @@ import android.util.Log;
 import androidx.fragment.app.FragmentActivity;
 
 import com.raihan.shikaku.model.BoardModel;
+import com.raihan.shikaku.model.Checker;
 import com.raihan.shikaku.model.Level;
 import com.raihan.shikaku.model.Rectangle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BoardPresenter implements BoardContract.Presenter {
+public class BoardPresenter implements BoardContract.Presenter, BoardContract.CheckerListener {
 
     private BoardContract.View view;
     private BoardContract.Model model;
@@ -53,7 +54,6 @@ public class BoardPresenter implements BoardContract.Presenter {
     @Override
     public void onProcessDrawingBoard() {
         this.hm= this.model.calculateBoard();
-        view.getCellSize(hm.get("cellSize"));
 
         //        untuk menggambar grid
         for (int i = 0; i < gridSize; i++) {
@@ -64,21 +64,12 @@ public class BoardPresenter implements BoardContract.Presenter {
                 int right = hm.get("offsetX") + (j + 1) * hm.get("cellSize");
                 int bottom = hm.get("offsetY") + (i + 1) * hm.get("cellSize");
 
-
-//                  gambar border sel
-//                mCanvas.drawRect(left, top, right, bottom, paint);
-//                Log.d("TAG", "onProcessDrawingBoard: "+left+", "+top+", "+right+", "+bottom);
                 this.view.drawBoard(left, top, right, bottom);
 
                 lvl.getCellNumbers();
                 int angka = lvl.getCellNumbers()[i][j];
-
-
                 if (angka != 0) {// tampilkan angka selain 0
-                    String angkaStr = Integer.toString(angka);
-
                     this.view.drawNumbers(angka, left, top, right, bottom);
-//                    mCanvas.drawText(angkaStr, textX, textY, textPaint);
                 }
             }
         }
@@ -90,16 +81,16 @@ public class BoardPresenter implements BoardContract.Presenter {
         int startCol= hm1.get("startCol");
         int endRow = hm1.get("endRow");
         int endCol = hm1.get("endCol");
+        Log.d("TAG", "onProcessSelectedCell: "+startRow+", "+startCol);
+        int left = rectCoordinateCol(true, 10, startCol, endCol);
+        int top = rectCoordinateRow(true, 10, startRow, endRow);
+        int right = rectCoordinateCol(false, 10, startCol, endCol);
+        int bottom = rectCoordinateRow(false, 10, startRow, endRow);
 
-        int left = rectCoordinateRow(true, 10, startRow, endRow);
-        int top = rectCoordinateCol(true, 10, startCol, endCol);
-        int right = rectCoordinateRow(false, 10, startRow, endRow);
-        int bottom = rectCoordinateCol(false, 10, startCol, endCol);
-
-        int leftCheck = rectCoordinateRow(true, 0, startRow, endRow);
-        int topCheck = rectCoordinateCol(true, 0, startCol, endCol);
-        int rightCheck = rectCoordinateRow(false, 0, startRow, endRow);
-        int bottomCheck = rectCoordinateCol(false, 0, startCol, endCol);
+        int leftCheck = rectCoordinateCol(true, 0, startRow, endRow);
+        int topCheck = rectCoordinateRow(true, 0, startCol, endCol);
+        int rightCheck = rectCoordinateCol(false, 0, startRow, endRow);
+        int bottomCheck = rectCoordinateRow(false, 0, startCol, endCol);
 
         int length= rightCheck-leftCheck;
         length/=hm.get("cellSize");
@@ -112,7 +103,20 @@ public class BoardPresenter implements BoardContract.Presenter {
 //        menghitung dalam sebuah rectangle ada berapa sel, bila sel<1 jangan buat rectangle
         if(length>1){
             if(isUp){
-                Rectangle rect= new Rectangle(left, top, right, bottom);
+                ArrayList<Rectangle> rectanglesToRemove = new ArrayList<>();
+                for (Rectangle existingRect : rectList) {
+                    if (isRectangleOverlapping(left, top, right, bottom, existingRect)) {
+                        rectanglesToRemove.add(existingRect);
+                        view.overlapChecker(true);
+                        Log.d("TAG", "overlapped");
+                    }
+                }
+                rectList.removeAll(rectanglesToRemove);
+
+                Rectangle rect= new Rectangle(left, top, right, bottom, length);
+                rect.setIndex(startRow, startCol, endRow, endCol);
+                Log.d("TAG", "startRow: "+startRow+" endRow "+endRow);
+                Log.d("TAG", "startCol: "+startCol+" endCol "+endCol);
                 rectList.add(rect);
                 this.view.setSelectedCell(rectList);
             }else{
@@ -124,6 +128,23 @@ public class BoardPresenter implements BoardContract.Presenter {
         }
     }
 
+    private boolean isRectangleOverlapping(int startRow1, int startCol1, int endRow1, int endCol1,
+                                           Rectangle rect2) {
+        int left1 = Math.min(startRow1, endRow1);
+        int top1 = Math.min(startCol1, endCol1);
+        int right1 = Math.max(startRow1, endRow1);
+        int bottom1 = Math.max(startCol1, endCol1);
+
+        int left2 = rect2.getLeft();
+        int top2 = rect2.getTop();
+        int right2 = rect2.getRight();
+        int bottom2 = rect2.getBottom();
+
+        // Pengecekan tumpang tindih
+        return left1 <= right2 && right1 >= left2 && top1 <= bottom2 && bottom1 >= top2;
+    }
+
+
     @Override
     public void sendWidth(int width) {
         this.model.getWidth(width);
@@ -134,20 +155,31 @@ public class BoardPresenter implements BoardContract.Presenter {
         this.model.getHeight(height);
     }
 
+    @Override
+    public void sendRectangles() {
+        Checker checker= new Checker(this, this.rectList, this.lvl, this.gridSize);
+        checker.validateBoard();
+    }
+
     private int rectCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
         if(isStart){
-            return hm.get("offsetY") + add + Math.min(startCol, endCol) * hm.get("cellSize");
+            return hm.get("offsetX") + add + Math.min(startCol, endCol) * hm.get("cellSize");
         }else{
-            return hm.get("offsetY") - add + (Math.max(startCol, endCol) + 1) * hm.get("cellSize");
+            return hm.get("offsetX") - add + (Math.max(startCol, endCol) + 1) * hm.get("cellSize");
         }
     }
 
     private int rectCoordinateRow(boolean isStart, int add, int startRow, int endRow) {
         if(isStart){
-            return hm.get("offsetX") + add + Math.min(startRow, endRow) * hm.get("cellSize");
+            return hm.get("offsetY") + add + Math.min(startRow, endRow) * hm.get("cellSize");
         }else{
-            return hm.get("offsetX") - add + (Math.max(startRow, endRow) + 1) * hm.get("cellSize");
+            return hm.get("offsetY") - add + (Math.max(startRow, endRow) + 1) * hm.get("cellSize");
         }
+    }
+
+    @Override
+    public void sendResult(boolean isValid) {
+        view.onToastResult(isValid);
     }
 }
 

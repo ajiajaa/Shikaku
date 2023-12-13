@@ -87,6 +87,8 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         paint.setStrokeWidth(strokeWidth);
 
         mCanvas.drawRect(left, top, right, bottom, paint);
+        invalidate();
+
     }
 
     public void drawOnMoveSelectedCell(int left, int top, int right, int bottom){

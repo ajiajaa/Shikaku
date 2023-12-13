@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.window.OnBackInvokedCallback;
 
 import androidx.annotation.NonNull;
@@ -20,14 +21,14 @@ import com.raihan.shikaku.presenter.BoardPresenter;
 
 import java.util.List;
 
-public class BoardFragment extends Fragment implements View.OnTouchListener, BoardContract.View {
+public class BoardFragment extends Fragment implements View.OnTouchListener, View.OnClickListener, BoardContract.View {
     protected FragmentBoardBinding binding;
     protected BoardPresenter presenter;
 
     private PointF start;
     private List<Rectangle> rectList;
 
-    private int cellSize;
+    private boolean isOverlap= false;
 
     public static BoardFragment newInstance(String title){
         BoardFragment fragment = new BoardFragment();
@@ -45,17 +46,16 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                 // We use a String here, but any type that can be put in a Bundle is supported.
                 int result = bundle.getInt("GridSize");
+                rectList= null;
                 Log.d("TAG", "onFragmentResult: "+result);
 //                Log.d("TAG", "onFragmentResult: "+binding.ivCanvas.getWidth());
 
                 presenter.sendGridSize(result);
-
-
-                // Do something with the result.
             }
         });
         initCanvas();
         this.binding.ivCanvas.setOnTouchListener(this);
+        this.binding.Checker.setOnClickListener(this);
 
         return view;
     }
@@ -70,7 +70,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
                     presenter.sendHeight(binding.ivCanvas.getHeight());
                     binding.ivCanvas.background();
                     presenter.onProcessDrawingBoard();
-                    rectList= null;
+                    if(rectList!=null){
+                        drawSelectedcell();
+                    }
                 }
             });
         }
@@ -86,34 +88,28 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
                 start = new PointF(e.getX(), e.getY());
                 return true;
             case MotionEvent.ACTION_UP:
-//                 menghindari menyimpan rectangle ketika tap saja dan bila cell<=1
-                if(e.getX()/cellSize!=start.x/cellSize && e.getY()/cellSize!=start.y/cellSize){
-//                    menghindari melakukan move/drag dalam satu cell
-                    if(Math.abs(e.getX() - start.x) > cellSize || Math.abs(e.getY() - start.y) > cellSize){
-                        //hapus canvas
-                        binding.ivCanvas.background();
-                        presenter.onProcessDrawingBoard();
-                    }
-                    presenter.onTouch(true, start, e.getX(), e.getY());
-                    binding.count.setText("0");
-                }
-
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                // jangan buat rectangle kalo hanya 1 cell
-                if(e.getX()/cellSize!=start.x/cellSize && e.getY()/cellSize!=start.y/cellSize){
-                    //hapus canvas
+                presenter.onTouch(true, start, e.getX(), e.getY());
+                binding.count.setText("0");
+                if(this.isOverlap){
                     binding.ivCanvas.background();
                     presenter.onProcessDrawingBoard();
-
-                    Log.d("TAG", "onTouch/MOVE/start: "+start.x+ ", "+start.y);
-                    Log.d("TAG", "onTouch/MOVE/end: "+e.getX()+ ", "+e.getY());
-
-                    if(rectList!=null){
-                        drawSelectedcell();
-                    }
-                    presenter.onTouch(false, start, e.getX(), e.getY());
+                    drawSelectedcell();
+                    this.isOverlap= false;
+                    Log.d("TAG", "onTouch: im in overlap");
                 }
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                //hapus canvas
+                binding.ivCanvas.background();
+                presenter.onProcessDrawingBoard();
+
+                Log.d("TAG", "onTouch/MOVE/start: "+start.x+ ", "+start.y);
+                Log.d("TAG", "onTouch/MOVE/end: "+e.getX()+ ", "+e.getY());
+
+                if(rectList!=null){
+                    drawSelectedcell();
+                }
+                presenter.onTouch(false, start, e.getX(), e.getY());
                 return true;
             default:
                 return false;
@@ -121,9 +117,24 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         initCanvas();
+    }
+
+    @Override
+    public void overlapChecker(boolean isOverlap){
+        this.isOverlap= isOverlap;
+    }
+
+    @Override
+    public void onToastResult(boolean isValid) {
+        if(isValid){
+            // Contoh: Menampilkan pesan mengambang dengan durasi pendek
+            Toast.makeText(getContext(), "Jawaban Anda Benar!🎉", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Jawaban Anda salah 🤣", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -166,9 +177,11 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
         binding.count.setText(Integer.toString(ctr));
     }
 
-    @Override
-    public void getCellSize(int cellSize) {
-        this.cellSize= cellSize;
-    }
 
+    @Override
+    public void onClick(View v) {
+        if(this.binding.Checker== v){
+            this.presenter.sendRectangles();
+        }
+    }
 }
