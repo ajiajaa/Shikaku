@@ -1,6 +1,7 @@
 # Shikaku
 Repositori untuk menuntaskan tugas akhir
 Progress at 75% (kinda).
+
 Task list :
 1. Buat rectangle bisa tumpang tindih dimana bila tumpang tindih rectangle sebelumnya akan hilang. (Done! 13/12/2023)
 2. checker/solver (Done! 13/12/2023)
