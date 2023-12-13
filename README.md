@@ -10,7 +10,7 @@ Task list :
      - sound
      - dll
 5. UI
-6. MVP Architecture (Done! diprioritaskan agar mempermudah pengerjaan)
+6. MVP Architecture (Done! 19/09/2023)
 
 Aplikasi dapat di-download sesuai progress yang sudah di-push pada repository ini:
 
