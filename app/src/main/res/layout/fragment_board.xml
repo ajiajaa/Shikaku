@@ -11,20 +11,28 @@
         android:layout_centerInParent="true"
         android:id="@+id/count"
         android:text="0"
-        android:layout_above="@id/iv_canvas"
+        android:layout_above="@id/box"
         android:layout_margin="20dp"
         android:textSize="24sp"/>
-    <com.raihan.shikaku.view.BoardCanvas
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="412dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/box"
         android:layout_centerInParent="true"
-        android:id="@+id/iv_canvas"/>
+        android:layout_margin="10dp"
+        android:background="@drawable/border">
+        <com.raihan.shikaku.view.BoardCanvas
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/iv_canvas"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Checker"
         android:text="Check"
-        android:layout_below="@id/iv_canvas"
+        android:layout_below="@id/box"
         android:layout_centerHorizontal="true"
         ></Button>
 </RelativeLayout>

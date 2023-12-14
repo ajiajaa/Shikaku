@@ -29,7 +29,9 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
 
 
     private int strokeWidth = 7;// tebal stroke
+    private int textSize = 64;// tebal stroke
 
+    private int gridSize;
 
 
     public BoardCanvas(Context context, AttributeSet attributeSet) {
@@ -58,6 +60,8 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(3);
+
 
         //                  gambar border sel
         mCanvas.drawRect(left, top, right, bottom, paint);
@@ -68,8 +72,7 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         //          style angka
         Paint textPaint = new Paint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(64); // ukuran teks
-
+        textPaint.setTextSize(textSize);
         String angkaStr = Integer.toString(angka);
 
         //                      tentukan posisi tengah angka di dalam sel
@@ -101,5 +104,12 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
 
         mCanvas.drawRect(left, top, right, bottom, paint);
         invalidate();
+    }
+    public void setGridSize(int gridSize){
+        this.gridSize= gridSize;
+        if(gridSize!=5){
+            textSize= 32;
+            strokeWidth= 5;
+        }
     }
 }

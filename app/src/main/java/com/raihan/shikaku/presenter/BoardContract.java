@@ -37,9 +37,5 @@ public interface BoardContract {
         void getWidth(int width);
         void getHeight(int height);
     }
-
-    interface CheckerListener{
-        void sendResult(boolean isValid);
-    }
 }
 

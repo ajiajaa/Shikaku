@@ -41,22 +41,21 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Vie
         View view = this.binding.getRoot();
 
         this.presenter= new BoardPresenter(this);
+        this.binding.ivCanvas.setOnTouchListener(this);
+        this.binding.Checker.setOnClickListener(this);
         getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                 // We use a String here, but any type that can be put in a Bundle is supported.
                 int result = bundle.getInt("GridSize");
                 rectList= null;
+                binding.ivCanvas.setGridSize(result);
                 Log.d("TAG", "onFragmentResult: "+result);
 //                Log.d("TAG", "onFragmentResult: "+binding.ivCanvas.getWidth());
 
                 presenter.sendGridSize(result);
             }
         });
-        initCanvas();
-        this.binding.ivCanvas.setOnTouchListener(this);
-        this.binding.Checker.setOnClickListener(this);
-
         return view;
     }
 
@@ -129,9 +128,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Vie
 
     @Override
     public void onToastResult(boolean isValid) {
-        if(isValid){
+        if(!isValid){
             // Contoh: Menampilkan pesan mengambang dengan durasi pendek
-            Toast.makeText(getContext(), "Jawaban Anda Benar!🎉", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Selamat jawaban Anda benar!🎉", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(getContext(), "Jawaban Anda salah 🤣", Toast.LENGTH_SHORT).show();
         }

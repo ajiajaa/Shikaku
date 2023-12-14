@@ -13,7 +13,7 @@ import com.raihan.shikaku.model.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BoardPresenter implements BoardContract.Presenter, BoardContract.CheckerListener {
+public class BoardPresenter implements BoardContract.Presenter {
 
     private BoardContract.View view;
     private BoardContract.Model model;
@@ -157,8 +157,8 @@ public class BoardPresenter implements BoardContract.Presenter, BoardContract.Ch
 
     @Override
     public void sendRectangles() {
-        Checker checker= new Checker(this, this.rectList, this.lvl, this.gridSize);
-        checker.validateBoard();
+        Checker checker= new Checker(this.rectList, this.lvl, this.gridSize);
+        view.onToastResult(checker.validateBoard());
     }
 
     private int rectCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
@@ -175,11 +175,6 @@ public class BoardPresenter implements BoardContract.Presenter, BoardContract.Ch
         }else{
             return hm.get("offsetY") - add + (Math.max(startRow, endRow) + 1) * hm.get("cellSize");
         }
-    }
-
-    @Override
-    public void sendResult(boolean isValid) {
-        view.onToastResult(isValid);
     }
 }
 
