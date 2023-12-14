@@ -1,9 +1,6 @@
 package com.raihan.shikaku.model;
 
 import android.util.Log;
-import android.widget.Toast;
-
-import com.raihan.shikaku.presenter.BoardPresenter;
 
 import java.util.ArrayList;
 

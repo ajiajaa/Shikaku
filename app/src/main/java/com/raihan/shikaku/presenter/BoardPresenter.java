@@ -3,8 +3,6 @@ package com.raihan.shikaku.presenter;
 import android.graphics.PointF;
 import android.util.Log;
 
-import androidx.fragment.app.FragmentActivity;
-
 import com.raihan.shikaku.model.BoardModel;
 import com.raihan.shikaku.model.Checker;
 import com.raihan.shikaku.model.Level;

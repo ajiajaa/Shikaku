@@ -1,22 +1,11 @@
 package com.raihan.shikaku.model;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.Log;
-import android.view.MotionEvent;
 
-import androidx.core.content.res.ResourcesCompat;
-
-import com.raihan.shikaku.R;
 import com.raihan.shikaku.presenter.BoardContract;
-import com.raihan.shikaku.presenter.BoardPresenter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class BoardModel implements BoardContract.Model {
     private int gridSize;// untuk memilih size grid(difficulty) sesuai pilihan pengguna (easy= 5x5, medium= 10x10, hard= 15x15)

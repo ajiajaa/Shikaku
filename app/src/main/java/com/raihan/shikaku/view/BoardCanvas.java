@@ -5,18 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.raihan.shikaku.R;
-
-import java.util.ArrayList;
 
 public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
 
