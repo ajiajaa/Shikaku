@@ -17,7 +17,7 @@ public class Checker {
     public boolean validateBoard(){
         int totalFilledCells = 0;
         for (Rectangle rect : rectList) {
-            // Hitung jumlah sel dalam setiap rectangle
+            // Hitung jumlah sel dalam setiap rectangle.
             totalFilledCells += rect.getTotalCell();
         }
         boolean isWrong= false;
@@ -31,7 +31,7 @@ public class Checker {
                     for (int j = Math.min(rectList.get(r).getStartCol(), rectList.get(r).getEndCol()); j <= jLength; j++) {
                         if (lvl.getCellNumbers()[i][j] != 0) {
                             if (lvl.getCellNumbers()[i][j] != rectList.get(r).getTotalCell()) {
-                                isWrong = true; // Tandai kesalahan
+                                isWrong = true;
                             }
                             numberCount++;
                             Log.d("TAG", "rectangle ["+r+"] : index= "+i+", "+j+" value= "+lvl.getCellNumbers()[i][j]+", "+rectList.get(r).getTotalCell());
@@ -50,7 +50,6 @@ public class Checker {
                 }
             }
 
-// Tampilkan pesan jika tidak ada kesalahan
             if (!isWrong) {
                 Log.d("TAG", "validateBoard: benar");
             }else{

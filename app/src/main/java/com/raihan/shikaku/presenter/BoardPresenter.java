@@ -57,10 +57,10 @@ public class BoardPresenter implements BoardContract.Presenter {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
 //                  agar grid berada ditengah image view
-                int left = hm.get("offsetX") + j * hm.get("cellSize");
-                int top = hm.get("offsetY") + i * hm.get("cellSize");
-                int right = hm.get("offsetX") + (j + 1) * hm.get("cellSize");
-                int bottom = hm.get("offsetY") + (i + 1) * hm.get("cellSize");
+                int left = rectCoordinateCol(true, 0, j, Integer.MAX_VALUE);
+                int top = rectCoordinateRow(true, 0, i, Integer.MAX_VALUE);
+                int right = rectCoordinateCol(false, 0, j, Integer.MIN_VALUE);
+                int bottom= rectCoordinateRow(false, 0, i, Integer.MIN_VALUE);
 
                 this.view.drawBoard(left, top, right, bottom);
 
