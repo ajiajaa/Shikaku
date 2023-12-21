@@ -127,8 +127,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Vie
 
     @Override
     public void onToastResult(boolean isValid) {
-        if(!isValid){
-            // Contoh: Menampilkan pesan mengambang dengan durasi pendek
+        if(isValid){
             Toast.makeText(getContext(), "Selamat jawaban Anda benar!🎉", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(getContext(), "Jawaban Anda salah 🤣", Toast.LENGTH_SHORT).show();

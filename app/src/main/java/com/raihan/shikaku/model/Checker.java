@@ -3,6 +3,8 @@ package com.raihan.shikaku.model;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Checker {
     private  ArrayList<Rectangle> rectList;
@@ -15,50 +17,27 @@ public class Checker {
         this.gridSize= gridSize;
     }
     public boolean validateBoard(){
-        int totalFilledCells = 0;
-        for (Rectangle rect : rectList) {
-            // Hitung jumlah sel dalam setiap rectangle.
-            totalFilledCells += rect.getTotalCell();
-        }
-        boolean isWrong= false;
-        if(totalFilledCells==this.gridSize*this.gridSize){
-            Log.d("TAG", "validateBoard: full");
-            for (int r = 0; r < rectList.size(); r++) {
-                int numberCount= 0;
-                int iLength= Math.max(rectList.get(r).getStartRow(), rectList.get(r).getEndRow());
-                for (int i= Math.min(rectList.get(r).getStartRow(), rectList.get(r).getEndRow()); i <= iLength; i++) {
-                    int jLength= Math.max(rectList.get(r).getStartCol(), rectList.get(r).getEndCol());
-                    for (int j = Math.min(rectList.get(r).getStartCol(), rectList.get(r).getEndCol()); j <= jLength; j++) {
-                        if (lvl.getCellNumbers()[i][j] != 0) {
-                            if (lvl.getCellNumbers()[i][j] != rectList.get(r).getTotalCell()) {
-                                isWrong = true;
-                            }
-                            numberCount++;
-                            Log.d("TAG", "rectangle ["+r+"] : index= "+i+", "+j+" value= "+lvl.getCellNumbers()[i][j]+", "+rectList.get(r).getTotalCell());
-                        }
-                    }
-                    if (isWrong) {
-                        break;
-                    }
-                }
-                Log.d("TAG", "numberCount: ["+r+"] "+numberCount);
-                if(numberCount!=1){
-                    isWrong= true;
-                }
-                if (isWrong) {
+        Map<Angka, Rectangle> pemetaan = new HashMap<>();
+        ArrayList<Angka> angkaList= lvl.getCellNumbers();
+        int count = 1;
+        for (Rectangle r : rectList) {
+            for (Angka a : lvl.getCellNumbers()) {
+                if (a.getRow() >= r.getStartRow() && a.getRow() <= r.getEndRow()
+                        && a.getColumn() >= r.getStartCol() && a.getColumn() <= r.getEndCol()
+                        && a.getValue() == r.getTotalCell()) {
+                    pemetaan.put(a, r);
+                    System.out.println("rect ke-"+count+": "+r.getTotalCell()+", "+a.getValue());
+                    count++;
                     break;
                 }
             }
-
-            if (!isWrong) {
-                Log.d("TAG", "validateBoard: benar");
-            }else{
-                Log.d("TAG", "validateBoard: salah");
-            }
-        }else{
-            Log.d("TAG", "papan tidak terisi penuh");
-            isWrong= true;
         }
-        return isWrong;
+
+        if(pemetaan.size()!=angkaList.size()) {
+            System.out.println("Pemetaan tidak satu ke satu");
+            return false;
+        }
+        System.out.println("Pemetaan satu ke satu");
+        return true;
     }
 }

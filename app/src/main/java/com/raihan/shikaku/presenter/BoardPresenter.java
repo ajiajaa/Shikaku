@@ -3,6 +3,7 @@ package com.raihan.shikaku.presenter;
 import android.graphics.PointF;
 import android.util.Log;
 
+import com.raihan.shikaku.model.Angka;
 import com.raihan.shikaku.model.BoardModel;
 import com.raihan.shikaku.model.Checker;
 import com.raihan.shikaku.model.Level;
@@ -11,7 +12,8 @@ import com.raihan.shikaku.model.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BoardPresenter implements BoardContract.Presenter {
+public class
+BoardPresenter implements BoardContract.Presenter {
 
     private BoardContract.View view;
     private BoardContract.Model model;
@@ -51,44 +53,47 @@ public class BoardPresenter implements BoardContract.Presenter {
 
     @Override
     public void onProcessDrawingBoard() {
-        this.hm= this.model.calculateBoard();
+        this.hm = this.model.calculateBoard();
 
         //        untuk menggambar grid
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
 //                  agar grid berada ditengah image view
-                int left = rectCoordinateCol(true, 0, j, Integer.MAX_VALUE);
-                int top = rectCoordinateRow(true, 0, i, Integer.MAX_VALUE);
-                int right = rectCoordinateCol(false, 0, j, Integer.MIN_VALUE);
-                int bottom= rectCoordinateRow(false, 0, i, Integer.MIN_VALUE);
+                int left = toCoordinateCol(true, 0, j, Integer.MAX_VALUE);
+                int top = toCoordinateRow(true, 0, i, Integer.MAX_VALUE);
+                int right = toCoordinateCol(false, 0, j, Integer.MIN_VALUE);
+                int bottom = toCoordinateRow(false, 0, i, Integer.MIN_VALUE);
 
                 this.view.drawBoard(left, top, right, bottom);
-
-                lvl.getCellNumbers();
-                int angka = lvl.getCellNumbers()[i][j];
-                if (angka != 0) {// tampilkan angka selain 0
-                    this.view.drawNumbers(angka, left, top, right, bottom);
-                }
             }
+        }
+        ArrayList<Angka> angkaList= lvl.getCellNumbers();
+        for (int i = 0; i < angkaList.size(); i++){
+            int left = toCoordinateCol(true, 0, angkaList.get(i).getColumn(), Integer.MAX_VALUE);
+            int top = toCoordinateRow(true, 0, angkaList.get(i).getRow(), Integer.MAX_VALUE);
+            int right = toCoordinateCol(false, 0, angkaList.get(i).getColumn(), Integer.MIN_VALUE);
+            int bottom = toCoordinateRow(false, 0, angkaList.get(i).getRow(), Integer.MIN_VALUE);
+
+            this.view.drawNumbers(angkaList.get(i).getValue(), left, top, right, bottom);
         }
     }
 
     @Override
     public void onProcessSelectedCell() {
-        int startRow= hm1.get("startRow");
-        int startCol= hm1.get("startCol");
-        int endRow = hm1.get("endRow");
-        int endCol = hm1.get("endCol");
+        int startRow= Math.min(hm1.get("startRow"), hm1.get("endRow"));
+        int startCol= Math.min(hm1.get("startCol"), hm1.get("endCol"));
+        int endRow =  Math.max(hm1.get("startRow"), hm1.get("endRow"));
+        int endCol =  Math.max(hm1.get("startCol"), hm1.get("endCol"));
         Log.d("TAG", "onProcessSelectedCell: "+startRow+", "+startCol);
-        int left = rectCoordinateCol(true, 10, startCol, endCol);
-        int top = rectCoordinateRow(true, 10, startRow, endRow);
-        int right = rectCoordinateCol(false, 10, startCol, endCol);
-        int bottom = rectCoordinateRow(false, 10, startRow, endRow);
+        int left = toCoordinateCol(true, 10, startCol, endCol);
+        int top = toCoordinateRow(true, 10, startRow, endRow);
+        int right = toCoordinateCol(false, 10, startCol, endCol);
+        int bottom = toCoordinateRow(false, 10, startRow, endRow);
 
-        int leftCheck = rectCoordinateCol(true, 0, startRow, endRow);
-        int topCheck = rectCoordinateRow(true, 0, startCol, endCol);
-        int rightCheck = rectCoordinateCol(false, 0, startRow, endRow);
-        int bottomCheck = rectCoordinateRow(false, 0, startCol, endCol);
+        int leftCheck = toCoordinateCol(true, 0, startRow, endRow);
+        int topCheck = toCoordinateRow(true, 0, startCol, endCol);
+        int rightCheck = toCoordinateCol(false, 0, startRow, endRow);
+        int bottomCheck = toCoordinateRow(false, 0, startCol, endCol);
 
         int length= rightCheck-leftCheck;
         length/=hm.get("cellSize");
@@ -159,7 +164,7 @@ public class BoardPresenter implements BoardContract.Presenter {
         view.onToastResult(checker.validateBoard());
     }
 
-    private int rectCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
+    private int toCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
         if(isStart){
             return hm.get("offsetX") + add + Math.min(startCol, endCol) * hm.get("cellSize");
         }else{
@@ -167,7 +172,7 @@ public class BoardPresenter implements BoardContract.Presenter {
         }
     }
 
-    private int rectCoordinateRow(boolean isStart, int add, int startRow, int endRow) {
+    private int toCoordinateRow(boolean isStart, int add, int startRow, int endRow) {
         if(isStart){
             return hm.get("offsetY") + add + Math.min(startRow, endRow) * hm.get("cellSize");
         }else{
