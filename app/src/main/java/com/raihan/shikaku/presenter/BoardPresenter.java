@@ -160,7 +160,7 @@ BoardPresenter implements BoardContract.Presenter {
 
     @Override
     public void sendRectangles() {
-        Checker checker= new Checker(this.rectList, this.lvl, this.gridSize);
+        Checker checker= new Checker(this.rectList, this.lvl);
         view.onToastResult(checker.validateBoard());
     }
 

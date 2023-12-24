@@ -9,12 +9,10 @@ import java.util.Map;
 public class Checker {
     private  ArrayList<Rectangle> rectList;
     private Level lvl;
-    private int gridSize;
 
-    public Checker(ArrayList<Rectangle> rectList, Level lvl, int gridSize){
+    public Checker(ArrayList<Rectangle> rectList, Level lvl){
         this.rectList= rectList;
         this.lvl= lvl;
-        this.gridSize= gridSize;
     }
     public boolean validateBoard(){
         Map<Angka, Rectangle> pemetaan = new HashMap<>();
