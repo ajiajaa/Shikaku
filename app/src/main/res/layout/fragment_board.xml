@@ -27,12 +27,4 @@
             android:id="@+id/iv_canvas"
             android:layout_margin="10dp"/>
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Checker"
-        android:text="Check"
-        android:layout_below="@id/box"
-        android:layout_centerHorizontal="true"
-        ></Button>
 </RelativeLayout>

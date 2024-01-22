@@ -20,7 +20,7 @@ import com.raihan.shikaku.presenter.BoardPresenter;
 
 import java.util.List;
 
-public class BoardFragment extends Fragment implements View.OnTouchListener, View.OnClickListener, BoardContract.View {
+public class BoardFragment extends Fragment implements View.OnTouchListener, BoardContract.View {
     protected FragmentBoardBinding binding;
     protected BoardPresenter presenter;
 
@@ -41,7 +41,6 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Vie
 
         this.presenter= new BoardPresenter(this);
         this.binding.ivCanvas.setOnTouchListener(this);
-        this.binding.Checker.setOnClickListener(this);
         getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
@@ -174,11 +173,4 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Vie
         binding.count.setText(Integer.toString(ctr));
     }
 
-
-    @Override
-    public void onClick(View v) {
-        if(this.binding.Checker== v){
-            this.presenter.sendRectangles();
-        }
-    }
 }

@@ -122,6 +122,16 @@ BoardPresenter implements BoardContract.Presenter {
                 Log.d("TAG", "startCol: "+startCol+" endCol "+endCol);
                 rectList.add(rect);
                 this.view.setSelectedCell(rectList);
+
+                //Check apakah sudah menyelesaikan papan, jika sudah check jawaban
+                Checker checker= new Checker(this.rectList, this.lvl);
+                int totalRecCell= 0;
+                for (int i= 0; i<rectList.size(); i++){
+                    totalRecCell+= rectList.get(i).getTotalCell();
+                }
+                if(rectList.size()==lvl.getCellNumbers().size() && totalRecCell==Math.pow(gridSize,2)){
+                    view.onToastResult(checker.validateBoard());
+                }
             }else{
                 this.view.drawOnMoveSelectedCell(left, top, right, bottom);
                 this.view.cellCounter(length);
@@ -160,8 +170,8 @@ BoardPresenter implements BoardContract.Presenter {
 
     @Override
     public void sendRectangles() {
-        Checker checker= new Checker(this.rectList, this.lvl);
-        view.onToastResult(checker.validateBoard());
+
+
     }
 
     private int toCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
