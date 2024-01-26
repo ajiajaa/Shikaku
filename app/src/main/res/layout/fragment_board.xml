@@ -21,9 +21,9 @@
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
         android:background="@drawable/border">
-        <com.raihan.shikaku.view.BoardCanvas
+        <com.raihan.shikaku.view.design.BoardCanvas
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="wrap_content"
             android:id="@+id/iv_canvas"
             android:layout_margin="10dp"/>
     </LinearLayout>

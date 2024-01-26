@@ -1,5 +1,6 @@
 package com.raihan.shikaku.presenter;
 
+import android.content.Context;
 import android.graphics.PointF;
 
 import com.raihan.shikaku.model.Rectangle;
@@ -22,7 +23,7 @@ public interface BoardContract {
 
     interface Presenter {
         void onTouch(boolean isUp, PointF start, float e1, float e2);
-        void sendGridSize(int gridSize);
+        void sendGridSize(Context context, int gridSize, int level);
         void onProcessDrawingBoard();
         void onProcessSelectedCell();
         void sendWidth(int width);

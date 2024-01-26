@@ -1,4 +1,4 @@
-package com.raihan.shikaku.view;
+package com.raihan.shikaku.view.design;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -47,6 +47,13 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         //          gambar canvas dengan warna putih
         int mColorBackground = ResourcesCompat.getColor(getResources(), R.color.white, null);
         this.mCanvas.drawColor(mColorBackground);
+    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int width = getMeasuredWidth();
+        setMeasuredDimension(width, width);
     }
     public void drawBoard(int left, int top, int right, int bottom) {
         //          style gambar grid

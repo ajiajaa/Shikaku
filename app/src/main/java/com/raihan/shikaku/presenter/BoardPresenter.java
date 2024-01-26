@@ -1,5 +1,6 @@
 package com.raihan.shikaku.presenter;
 
+import android.content.Context;
 import android.graphics.PointF;
 import android.util.Log;
 
@@ -45,10 +46,11 @@ BoardPresenter implements BoardContract.Presenter {
     }
 
     @Override
-    public void sendGridSize(int gridSize) {
+    public void sendGridSize(Context context, int gridSize, int level) {
         this.model.getGridSize(gridSize);
         this.gridSize= gridSize;
-        lvl= new Level(gridSize);
+        lvl= new Level(context, gridSize);
+        lvl.readPuzzles(level-1);
     }
 
     @Override

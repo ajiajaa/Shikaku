@@ -1,38 +1,101 @@
 package com.raihan.shikaku.model;
 
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
+
+import com.raihan.shikaku.R;
+import com.raihan.shikaku.presenter.LevelContract;
+
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-public class Level {
+public class Level implements LevelContract.Model {
+
+    private  Context context;
+    private int lvlIdle;
     private ArrayList<Angka> angkaList;
+    Scanner sc;
 
-    public Level(int gridSize) {
-        this.angkaList= new ArrayList<>();
-        fillCells();
+    public Level(Context context, int gridSize) {
+        this.angkaList = new ArrayList<>();
+        this.context = context;
+        getDifficulty(gridSize);
     }
 
-    private void fillCells() {
-        Angka angka= new Angka(0,1,2);
-        Angka angka1= new Angka(1,3,4);
-        Angka angka2= new Angka(1,4,2);
-        Angka angka3= new Angka(2,0,4);
-        Angka angka4= new Angka(2,4,3);
-        Angka angka5= new Angka(3,3,4);
-        Angka angka6= new Angka(3,4,2);
-        Angka angka7= new Angka(4,1,2);
-        Angka angka8= new Angka(4,2,2);
+    public Level(Context context) {
+        this.angkaList = new ArrayList<>();
+        this.context = context;
+    }
 
-        angkaList.add(angka);
-        angkaList.add(angka1);
-        angkaList.add(angka2);
-        angkaList.add(angka3);
-        angkaList.add(angka4);
-        angkaList.add(angka5);
-        angkaList.add(angka6);
-        angkaList.add(angka7);
-        angkaList.add(angka8);
+    public List<Integer> getData() {
+        List<Integer> data = new ArrayList<>();
+        for (int i = 1; i <= this.lvlIdle; i++) {
+            data.add(i);
+        }
+        return data;
+    }
+
+    private void readNumberOfPuzzles() {
+        if (this.sc.hasNextLine()) {
+            // Membaca banyak puzzle (baris pertama)
+            this.lvlIdle = Integer.parseInt(this.sc.nextLine());
+        }
+    }
+    @Override
+    public void readPuzzles(int chosenLevel) {
+        // Membaca setiap puzzle
+        for (int i = 0; i < this.lvlIdle; i++) {
+            String puzzleData = this.sc.nextLine();
+            if (i == chosenLevel) {
+                String[] puzzleElements = puzzleData.split(";");
+
+                // Memproses setiap elemen puzzle
+                for (String element : puzzleElements) {
+                    String[] parts = element.split(",");
+                    int baris = Integer.parseInt(parts[0]);
+                    int kolom = Integer.parseInt(parts[1]);
+                    int nilai = Integer.parseInt(parts[2]);
+
+                    Angka angka = new Angka(baris, kolom, nilai);
+                    this.angkaList.add(angka);
+                    // Lakukan sesuatu dengan nilai baris, kolom, dan nilai, misalnya, print ke layar
+                    Log.d("TAG", "fillCells: Puzzle ke-" + (i + 1) + ": Baris=" + baris + ", Kolom=" + kolom + ", Nilai=" + nilai);
+                }
+            }
+        }
+        this.sc.close();
     }
 
     public ArrayList<Angka> getCellNumbers() {
         return angkaList;
     }
+
+    @Override
+    public void getDifficulty(int difficulty) {
+        try {
+            Resources resources = this.context.getResources();
+            InputStream inputStream = null;
+
+            if (difficulty == 5) {
+                inputStream = resources.openRawResource(R.raw.puzzles5);
+            } else if (difficulty == 10) {
+                inputStream = resources.openRawResource(R.raw.puzzles10);
+            } else if (difficulty == 15) {
+                inputStream = resources.openRawResource(R.raw.puzzles15);
+            }
+
+            if (inputStream != null) {
+                Log.d("TAG", "getDifficulty: " + difficulty);
+                this.sc = new Scanner(inputStream);
+                readNumberOfPuzzles();
+            }
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

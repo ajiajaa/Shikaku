@@ -41,21 +41,23 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
 
         this.presenter= new BoardPresenter(this);
         this.binding.ivCanvas.setOnTouchListener(this);
-        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+        getParentFragmentManager().setFragmentResultListener("postKey", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                 // We use a String here, but any type that can be put in a Bundle is supported.
                 int result = bundle.getInt("GridSize");
+                int result1 = bundle.getInt("level");
                 rectList= null;
                 binding.ivCanvas.setGridSize(result);
                 Log.d("TAG", "onFragmentResult: "+result);
 //                Log.d("TAG", "onFragmentResult: "+binding.ivCanvas.getWidth());
 
-                presenter.sendGridSize(result);
+                presenter.sendGridSize(getContext(), result, result1);
             }
         });
         return view;
     }
+
 
     private void initCanvas() {
         if (binding.ivCanvas != null) {

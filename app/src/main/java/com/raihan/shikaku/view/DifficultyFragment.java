@@ -1,6 +1,7 @@
 package com.raihan.shikaku.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,21 +9,21 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.raihan.shikaku.MainActivity;
-import com.raihan.shikaku.databinding.FragmentHomeBinding;
+import com.raihan.shikaku.databinding.FragmentDifficultyBinding;
 
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
-    protected FragmentHomeBinding binding;
+public class DifficultyFragment extends Fragment implements View.OnClickListener{
+    protected FragmentDifficultyBinding binding;
 
 
-    public static HomeFragment newInstance(String title){
-        HomeFragment fragment = new HomeFragment();
+    public static DifficultyFragment newInstance(String title){
+        DifficultyFragment fragment = new DifficultyFragment();
 
         return fragment;
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.binding = FragmentHomeBinding.inflate(inflater,container,false);
+        this.binding = FragmentDifficultyBinding.inflate(inflater,container,false);
         View view = this.binding.getRoot();
 
         this.binding.btn5.setOnClickListener(this);
@@ -46,11 +47,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
 //        kirim gridsize ke fragment board
         Bundle result = new Bundle();
-        result.putInt("GridSize", value);
-
+        result.putInt("difficulty", value);
+        result.putBoolean("difficultyb", true);
+        Log.d("TAG", "onClickDiffrag: value="+ value);
         getParentFragmentManager().setFragmentResult("requestKey", result);
 
-        ((MainActivity)getActivity()).changePage(2);
+        ((MainActivity)getActivity()).changePage(3);
     }
 
 }
