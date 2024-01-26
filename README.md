@@ -1,4 +1,6 @@
 # Shikaku
+  ![Untitled](https://github.com/ajiajaa/Shikaku/assets/95739606/38f1716b-49ed-41ed-a8b0-7c0b6b6cc4e2)
+
 Repository to complete my undergraduate thesis.
 
 Progress at 75% (kinda).
