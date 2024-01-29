@@ -10,12 +10,12 @@ Task list :
 2. checker/solver (Done! 13/12/2023)
 3. assign puzzles with txt buffer---will be more as time goes by (Particulary! 26/01/2024)
 4. choose difficulty and level (Done! 26/01/2024)
-5. finish window
-6. after puzzle finish, go to the next puzzle
+5. finish window (Done! 29/01/2024)
+6. after puzzle finish, go to the next puzzle (Done! 29/01/2024)
 7. additional features :
-     - timer
+     - timer (Done! 29/01/2024)
      - sound
-     - etc
+     - vibrate (Done! 29/01/2024)
 8. UI
 9. MVP Architecture (Done! 19/09/2023)
 
