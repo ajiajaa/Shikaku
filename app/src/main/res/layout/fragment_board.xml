@@ -4,7 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time"
+        android:text="0:00"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:textSize="24sp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,4 +34,12 @@
             android:id="@+id/iv_canvas"
             android:layout_margin="10dp"/>
     </LinearLayout>
+
+    <SeekBar
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/zoomSeekBar"
+        android:max="100"
+        android:layout_below="@id/box"></SeekBar>
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.raihan.shikaku.presenter;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import com.raihan.shikaku.model.Angka;
@@ -27,8 +28,13 @@ BoardPresenter implements BoardContract.Presenter {
     private int gridSize;
     private Level lvl;
 
+    private CountDownTimer countDownTimer;
 
-    private  final ArrayList<Rectangle> rectList = new ArrayList<>();// menyimpan rectangle yang dibuat user
+    private String formattedTime;
+
+
+
+    private ArrayList<Rectangle> rectList;// menyimpan rectangle yang dibuat user
 
 
     public BoardPresenter(BoardContract.View view) {
@@ -97,15 +103,14 @@ BoardPresenter implements BoardContract.Presenter {
         int rightCheck = toCoordinateCol(false, 0, startRow, endRow);
         int bottomCheck = toCoordinateRow(false, 0, startCol, endCol);
 
+//        menghitung dalam sebuah rectangle ada berapa sel, bila sel<1 jangan buat rectangle
         int length= rightCheck-leftCheck;
-        length/=hm.get("cellSize");
-
         int width= bottomCheck-topCheck;
+        length/=hm.get("cellSize");
         width/=hm.get("cellSize");
 
         length*= width;
 
-//        menghitung dalam sebuah rectangle ada berapa sel, bila sel<1 jangan buat rectangle
         if(length>1){
             if(isUp){
                 ArrayList<Rectangle> rectanglesToRemove = new ArrayList<>();
@@ -114,6 +119,7 @@ BoardPresenter implements BoardContract.Presenter {
                         rectanglesToRemove.add(existingRect);
                         view.overlapChecker(true);
                         Log.d("TAG", "overlapped");
+                        view.vibrating();
                     }
                 }
                 rectList.removeAll(rectanglesToRemove);
@@ -122,8 +128,10 @@ BoardPresenter implements BoardContract.Presenter {
                 rect.setIndex(startRow, startCol, endRow, endCol);
                 Log.d("TAG", "startRow: "+startRow+" endRow "+endRow);
                 Log.d("TAG", "startCol: "+startCol+" endCol "+endCol);
+
                 rectList.add(rect);
                 this.view.setSelectedCell(rectList);
+                view.vibrating();
 
                 //Check apakah sudah menyelesaikan papan, jika sudah check jawaban
                 Checker checker= new Checker(this.rectList, this.lvl);
@@ -171,9 +179,8 @@ BoardPresenter implements BoardContract.Presenter {
     }
 
     @Override
-    public void sendRectangles() {
-
-
+    public void newRectList() {
+        this.rectList= new ArrayList<>();
     }
 
     private int toCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
@@ -189,6 +196,67 @@ BoardPresenter implements BoardContract.Presenter {
             return hm.get("offsetY") + add + Math.min(startRow, endRow) * hm.get("cellSize");
         }else{
             return hm.get("offsetY") - add + (Math.max(startRow, endRow) + 1) * hm.get("cellSize");
+        }
+    }
+
+    //timer thingy
+    @Override
+    public void startStopwatch() {
+        this.formattedTime= "";
+        countDownTimer = new CountDownTimer(Long.MAX_VALUE, 1000) { // Setiap 1000 milidetik (1 detik)
+            long elapsedTime = 0;
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                elapsedTime += 1000;
+                updateStopwatch(elapsedTime);
+            }
+
+            @Override
+            public void onFinish() {
+                // Metode ini dipanggil saat timer selesai (meskipun tidak diaktifkan di sini)
+            }
+        }.start();
+    }
+
+    @Override
+    public void stopStopwatch() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            calculateScore();
+
+        }
+    }
+
+    private void updateStopwatch(long elapsedTime) {
+        // Konversi waktu dalam milidetik menjadi format menit:detik
+        long minutes = (elapsedTime / 1000) / 60;
+        long seconds = (elapsedTime / 1000) % 60;
+
+        // Format waktu dan setel ke TextView
+        this.formattedTime = String.format("%d:%02d", minutes, seconds);
+        view.sendStopwatch(this.formattedTime);
+    }
+    private void calculateScore() {
+        String timeText = this.formattedTime;
+
+        // Split waktu menjadi menit dan detik
+        String[] timeComponents = timeText.split(":");
+        if (timeComponents.length == 2) {
+            try {
+                int minutes = Integer.parseInt(timeComponents[0]);
+                int seconds = Integer.parseInt(timeComponents[1]);
+
+                // Konversi waktu menjadi total detik
+                int totalSeconds = (minutes * 60) + seconds;
+
+                view.getSecond(totalSeconds);
+
+
+            } catch (NumberFormatException e) {
+                // Handle jika parsing gagal
+                e.printStackTrace();
+            }
         }
     }
 }

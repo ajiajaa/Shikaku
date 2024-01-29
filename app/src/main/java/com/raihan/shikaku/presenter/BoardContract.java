@@ -19,6 +19,11 @@ public interface BoardContract {
         void cellCounter(int ctr);
         void overlapChecker(boolean isOverlap);
         void onToastResult(boolean isValid);
+        void sendStopwatch(String time);
+        void getSecond(int seconds);
+        void vibrating();
+
+
     }
 
     interface Presenter {
@@ -28,7 +33,10 @@ public interface BoardContract {
         void onProcessSelectedCell();
         void sendWidth(int width);
         void sendHeight(int height);
-        void sendRectangles();
+        void newRectList();
+
+        void startStopwatch();
+        void stopStopwatch();
     }
 
     interface Model {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.raihan.shikaku.MainActivity;
 import com.raihan.shikaku.databinding.FragmentIndexBinding;
@@ -38,6 +39,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
             ((MainActivity)getActivity()).changePage(2);
         }
         if(this.binding.music== v){
+            FinishDialogFragment fdf= new FinishDialogFragment();
+            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+            fdf.show(ft,"a");
         }
         if(this.binding.how== v){
         }

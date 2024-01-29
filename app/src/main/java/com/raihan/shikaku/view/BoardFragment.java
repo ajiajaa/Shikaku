@@ -1,17 +1,24 @@
 package com.raihan.shikaku.view;
 
 import android.graphics.PointF;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.raihan.shikaku.databinding.FragmentBoardBinding;
 import com.raihan.shikaku.model.Rectangle;
@@ -29,6 +36,21 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
 
     private boolean isOverlap= false;
 
+    private int gridSize;
+    private int level;
+
+    private int seconds;
+    private FinishDialogFragment fdf;
+
+    private Vibrator vibrator;
+    private SeekBar zoomSeekBar;
+
+    private boolean isPanning;
+
+
+
+
+
     public static BoardFragment newInstance(String title){
         BoardFragment fragment = new BoardFragment();
 
@@ -41,20 +63,52 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
 
         this.presenter= new BoardPresenter(this);
         this.binding.ivCanvas.setOnTouchListener(this);
+        vibrator = (Vibrator) requireContext().getSystemService(getContext().VIBRATOR_SERVICE);
+        zoomSeekBar = binding.zoomSeekBar;
+        zoomSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Update skala berdasarkan nilai seekBar
+                float newScale = 1.0f + (progress * 0.05f);
+                updateZoom(newScale);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         getParentFragmentManager().setFragmentResultListener("postKey", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                 // We use a String here, but any type that can be put in a Bundle is supported.
-                int result = bundle.getInt("GridSize");
-                int result1 = bundle.getInt("level");
-                rectList= null;
-                binding.ivCanvas.setGridSize(result);
-                Log.d("TAG", "onFragmentResult: "+result);
-//                Log.d("TAG", "onFragmentResult: "+binding.ivCanvas.getWidth());
+                gridSize = bundle.getInt("GridSize");
+                level = bundle.getInt("level");
+                binding.ivCanvas.setGridSize(gridSize);
+                Log.d("TAG", "onFragmentResult: "+gridSize);
+                presenter.sendGridSize(getContext(), gridSize, level);
+                if(gridSize==5){
+                    binding.zoomSeekBar.setVisibility(View.INVISIBLE);
+                }
 
-                presenter.sendGridSize(getContext(), result, result1);
+                // untuk case saat menekan next level di dialog finish.
+                updateZoom(1.0f);
+                zoomSeekBar.setProgress(0);
+                rectList= null;
+                presenter.newRectList();
+                initCanvas();
+
+                seconds= 0;
+                binding.time.setText("0:00");
+                presenter.startStopwatch();
             }
         });
+
         return view;
     }
 
@@ -101,7 +155,6 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
                 //hapus canvas
                 binding.ivCanvas.background();
                 presenter.onProcessDrawingBoard();
-
                 Log.d("TAG", "onTouch/MOVE/start: "+start.x+ ", "+start.y);
                 Log.d("TAG", "onTouch/MOVE/end: "+e.getX()+ ", "+e.getY());
 
@@ -115,11 +168,12 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initCanvas();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        // untuk case saat aplikasi diminimize
+//        initCanvas();
+//    }
 
     @Override
     public void overlapChecker(boolean isOverlap){
@@ -128,13 +182,29 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
 
     @Override
     public void onToastResult(boolean isValid) {
-        if(isValid){
+        if(isValid) {
+            presenter.stopStopwatch();
+            this.fdf= fdf.newInstance(this.gridSize, this.level, this.seconds, this.binding.time.getText().toString());
+            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+            fdf.show(ft,"a");
             Toast.makeText(getContext(), "Selamat jawaban Anda benar!🎉", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getContext(), "Jawaban Anda salah 🤣", Toast.LENGTH_SHORT).show();
         }
     }
 
+    @Override
+    public void sendStopwatch(String time) {
+        this.binding.time.setText(time);
+    }
+
+    @Override
+    public void getSecond(int seconds) {
+        this.seconds= seconds;
+    }
+
+    @Override
+    public void vibrating() {
+        vibrate();
+    }
 
     @Override
     public void drawBoard(int left, int top, int right, int bottom) {
@@ -174,5 +244,31 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
     public void cellCounter(int ctr) {
         binding.count.setText(Integer.toString(ctr));
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.stopStopwatch();
+        zoomSeekBar.setProgress(0);
+        updateZoom(1.0f);
+    }
+    public void vibrate() {
+        if (vibrator != null) {
+            // Mengecek versi Android untuk menggunakan metode yang sesuai
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK));
+            } else {
+                // Sebelum Android Oreo
+                vibrator.vibrate(50);
+            }
+        }
+    }
+    private void updateZoom(float newScale) {
+        newScale = Math.max(1.0f, newScale);
+
+        binding.ivCanvas.setScaleX(newScale);
+        binding.ivCanvas.setScaleY(newScale);
+    }
+
 
 }
