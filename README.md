@@ -12,12 +12,14 @@ Task list :
 4. choose difficulty and level (Done! 26/01/2024)
 5. finish window (Done! 29/01/2024)
 6. after puzzle finish, go to the next puzzle (Done! 29/01/2024)
-7. additional features :
+7. Hint
+8. additional features :
      - timer (Done! 29/01/2024)
-     - sound
+     - Music (Done! 09/02/2024)
      - vibrate (Done! 29/01/2024)
-8. UI
-9. MVP Architecture (Done! 19/09/2023)
+9. UI---Themed based on wallpaper (Done! 11/02/2024)
+10. MVP Architecture (Done! 19/09/2023)
+11. Tutorial
 
 Tested :
 - Android 13 (Poco F3) : safe
