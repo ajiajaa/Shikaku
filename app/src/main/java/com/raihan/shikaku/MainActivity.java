@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
@@ -24,6 +27,10 @@ public class MainActivity extends AppCompatActivity{
     private BoardFragment bf;
     private LevelFragment lf;
 
+    private boolean isMusicPlaying;
+    public boolean isMusicOn;
+    private SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,12 @@ public class MainActivity extends AppCompatActivity{
         this.lf = lf.newInstance("Fragment Level");
         this.bf = bf.newInstance("Fragment Board");
 
+        preferences = this.getSharedPreferences("IFAPPS-Tubes02", Context.MODE_PRIVATE);
+        isMusicOn  = preferences.getBoolean("isMusicOn",true);//second parameter default value.
+        isMusicPlaying = true;
+        if(isMusicOn){
+            startMusicService();
+        }
 
 //      page thingy
         this.fragmentManager = this.getSupportFragmentManager();
@@ -42,7 +55,18 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(binding.getRoot());
     }
+    public void musicSetting(){
+        if(isMusicOn){
+            stopMusicService();
+            preferences.edit().putBoolean("isMusicOn", false).apply();
+            isMusicOn = false;
+        }else{
+            startMusicService();
+            preferences.edit().putBoolean("isMusicOn", true).apply();
+            isMusicOn = true;
+        }
 
+    }
     public void changePage(int page) {
         FragmentTransaction ft = this.fragmentManager.beginTransaction();
 
@@ -58,4 +82,31 @@ public class MainActivity extends AppCompatActivity{
         }
         ft.commit();
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Hentikan layanan musik saat aplikasi berpindah ke background (misalnya saat menekan tombol "Home")
+        if (isMusicPlaying) {
+            stopMusicService();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Mulai kembali layanan musik saat aplikasi dibuka kembali dari background
+        if (!isMusicPlaying && isMusicOn) {
+            startMusicService();
+        }
+    }
+    private void startMusicService() {
+        startService(new Intent(this, MusicService.class));
+        isMusicPlaying = true;
+    }
+
+    private void stopMusicService() {
+        stopService(new Intent(this, MusicService.class));
+        isMusicPlaying = false;
+    }
+
 }

@@ -13,13 +13,14 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.raihan.shikaku.R;
 import com.raihan.shikaku.databinding.FragmentBoardBinding;
 import com.raihan.shikaku.model.Rectangle;
 import com.raihan.shikaku.presenter.BoardContract;
@@ -27,7 +28,7 @@ import com.raihan.shikaku.presenter.BoardPresenter;
 
 import java.util.List;
 
-public class BoardFragment extends Fragment implements View.OnTouchListener, BoardContract.View {
+public class BoardFragment extends Fragment implements View.OnTouchListener,View.OnClickListener, BoardContract.View {
     protected FragmentBoardBinding binding;
     protected BoardPresenter presenter;
 
@@ -45,11 +46,12 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
     private Vibrator vibrator;
     private SeekBar zoomSeekBar;
 
+    private boolean firstOpen;
+    private boolean isFinish;
+    private boolean isPause;
     private boolean isPanning;
-
-
-
-
+    private int width;
+    private int height;
 
     public static BoardFragment newInstance(String title){
         BoardFragment fragment = new BoardFragment();
@@ -65,11 +67,17 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
         this.binding.ivCanvas.setOnTouchListener(this);
         vibrator = (Vibrator) requireContext().getSystemService(getContext().VIBRATOR_SERVICE);
         zoomSeekBar = binding.zoomSeekBar;
+        firstOpen = true;
+
         zoomSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Update skala berdasarkan nilai seekBar
                 float newScale = 1.0f + (progress * 0.05f);
+                if(newScale==1.0f){
+                    binding.ivCanvas.setTranslationX(0);
+                    binding.ivCanvas.setTranslationY(0);
+                }
                 updateZoom(newScale);
             }
 
@@ -93,7 +101,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
                 Log.d("TAG", "onFragmentResult: "+gridSize);
                 presenter.sendGridSize(getContext(), gridSize, level);
                 if(gridSize==5){
-                    binding.zoomSeekBar.setVisibility(View.INVISIBLE);
+                    binding.zoomSeekBar.setVisibility(View.GONE);
+                    binding.pan.setVisibility(View.GONE);
                 }
 
                 // untuk case saat menekan next level di dialog finish.
@@ -106,8 +115,13 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
                 seconds= 0;
                 binding.time.setText("0:00");
                 presenter.startStopwatch();
+                isFinish = false;
+                isPause = false;
             }
         });
+        this.binding.btnPause.setOnClickListener(this);
+        this.binding.pan.setOnClickListener(this);
+        this.binding.pan1.setOnClickListener(this);
 
         return view;
     }
@@ -121,6 +135,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
                     // Kode ini akan dijalankan setelah ImageView siap
                     presenter.sendWidth(binding.ivCanvas.getWidth());
                     presenter.sendHeight(binding.ivCanvas.getHeight());
+                    width = binding.ivCanvas.getWidth();
+                    height = binding.ivCanvas.getHeight();
                     binding.ivCanvas.background();
                     presenter.onProcessDrawingBoard();
                     if(rectList!=null){
@@ -135,36 +151,58 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
     @Override
     public boolean onTouch(View v, MotionEvent e) {
         int action = e.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
+        if(isPanning){
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
 //                simpan titik awal ketika menyentuh layar
-                start = new PointF(e.getX(), e.getY());
-                return true;
-            case MotionEvent.ACTION_UP:
-                presenter.onTouch(true, start, e.getX(), e.getY());
-                binding.count.setText("0");
-                if(this.isOverlap){
+                    start = new PointF(e.getX(), e.getY());
+                    return true;
+                case MotionEvent.ACTION_MOVE:
+                    float deltaX = e.getX() - start.x;
+                    float deltaY = e.getY() - start.y;
+                    binding.ivCanvas.setTranslationX(binding.ivCanvas.getTranslationX() + deltaX);
+                    binding.ivCanvas.setTranslationY(binding.ivCanvas.getTranslationY() + deltaY);
+                    Log.d("TAG", "getX: "+ binding.ivCanvas.getTranslationX()+" | getY: "+binding.ivCanvas.getTranslationY());
+                    start.set(e.getX(), e.getY());
+                    return true;
+
+                case MotionEvent.ACTION_UP:
+                    return true;
+                default:
+                    return false;
+            }
+        }else{
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+//                simpan titik awal ketika menyentuh layar
+                    start = new PointF(e.getX(), e.getY());
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    presenter.onTouch(true, start, e.getX(), e.getY());
+                    binding.count.setText("0");
+                    if(this.isOverlap){
+                        binding.ivCanvas.background();
+                        presenter.onProcessDrawingBoard();
+                        drawSelectedcell();
+                        this.isOverlap= false;
+                        Log.d("TAG", "onTouch: im in overlap");
+                    }
+                    return true;
+                case MotionEvent.ACTION_MOVE:
+                    //hapus canvas
                     binding.ivCanvas.background();
                     presenter.onProcessDrawingBoard();
-                    drawSelectedcell();
-                    this.isOverlap= false;
-                    Log.d("TAG", "onTouch: im in overlap");
-                }
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                //hapus canvas
-                binding.ivCanvas.background();
-                presenter.onProcessDrawingBoard();
-                Log.d("TAG", "onTouch/MOVE/start: "+start.x+ ", "+start.y);
-                Log.d("TAG", "onTouch/MOVE/end: "+e.getX()+ ", "+e.getY());
+                    Log.d("TAG", "onTouch/MOVE/start: "+start.x+ ", "+start.y);
+                    Log.d("TAG", "onTouch/MOVE/end: "+e.getX()+ ", "+e.getY());
 
-                if(rectList!=null){
-                    drawSelectedcell();
-                }
-                presenter.onTouch(false, start, e.getX(), e.getY());
-                return true;
-            default:
-                return false;
+                    if(rectList!=null){
+                        drawSelectedcell();
+                    }
+                    presenter.onTouch(false, start, e.getX(), e.getY());
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 
@@ -184,10 +222,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
     public void onToastResult(boolean isValid) {
         if(isValid) {
             presenter.stopStopwatch();
-            this.fdf= fdf.newInstance(this.gridSize, this.level, this.seconds, this.binding.time.getText().toString());
-            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-            fdf.show(ft,"a");
-            Toast.makeText(getContext(), "Selamat jawaban Anda benar!🎉", Toast.LENGTH_SHORT).show();
+            showDialog(false);
+            this.isFinish= true;
         }
     }
 
@@ -204,6 +240,11 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
     @Override
     public void vibrating() {
         vibrate();
+    }
+
+    @Override
+    public void notPause() {
+        this.isPause = false;
     }
 
     @Override
@@ -248,17 +289,26 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
     @Override
     public void onPause() {
         super.onPause();
-        presenter.stopStopwatch();
-        zoomSeekBar.setProgress(0);
-        updateZoom(1.0f);
+        presenter.pauseStopwatch();
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(!firstOpen && !isFinish && !isPause){
+            showDialog(true);
+        }else{
+            this.firstOpen = false;
+            zoomSeekBar.setProgress(0);
+            updateZoom(1.0f);
+        }
     }
     public void vibrate() {
         if (vibrator != null) {
-            // Mengecek versi Android untuk menggunakan metode yang sesuai
+            // cek versi Android
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK));
             } else {
-                // Sebelum Android Oreo
+                // sebelum Android Oreo / 8.0
                 vibrator.vibrate(50);
             }
         }
@@ -269,6 +319,31 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Boa
         binding.ivCanvas.setScaleX(newScale);
         binding.ivCanvas.setScaleY(newScale);
     }
+    public void showDialog(Boolean isPause){
+        if(isPause){
+            this.isPause = isPause;
+        }
+        this.fdf= fdf.newInstance(this.presenter,this.gridSize, this.level, this.seconds, this.binding.time.getText().toString(), isPause);
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        fdf.show(ft,"a");
+        this.presenter.pauseStopwatch();
+    }
 
-
+    @Override
+    public void onClick(View view) {
+        if(view == binding.btnPause){
+            presenter.stopStopwatch();
+            showDialog(true);
+        }
+        if(view == binding.pan){
+            this.isPanning = true;
+            binding.pan.setVisibility(View.GONE);
+            binding.pan1.setVisibility(View.VISIBLE);
+        }
+        if(view == binding.pan1){
+            this.isPanning = false;
+            binding.pan.setVisibility(View.VISIBLE);
+            binding.pan1.setVisibility(View.GONE);
+        }
+    }
 }

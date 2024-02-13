@@ -1,6 +1,7 @@
 package com.raihan.shikaku.view.design;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.util.AttributeSet;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.android.material.color.MaterialColors;
 import com.raihan.shikaku.R;
 
 public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
@@ -25,10 +27,11 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
     private int textSize = 64;// tebal stroke
 
     private int gridSize;
-
+    private Context context;
 
     public BoardCanvas(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        this.context = context;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         setImageBitmap(mBitmap);
         this.mCanvas = new Canvas(mBitmap);
         //          gambar canvas dengan warna putih
-        int mColorBackground = ResourcesCompat.getColor(getResources(), R.color.white, null);
+        int mColorBackground = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.BLACK);
         this.mCanvas.drawColor(mColorBackground);
     }
     @Override
@@ -58,7 +61,8 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
     public void drawBoard(int left, int top, int right, int bottom) {
         //          style gambar grid
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        int mColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
+        paint.setColor(mColor);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(3);
 
@@ -71,7 +75,8 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
     public void drawNumbers(int angka, int left, int top, int right, int bottom){
         //          style angka
         Paint textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        int mColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
+        textPaint.setColor(mColor);
         textPaint.setTextSize(textSize);
         String angkaStr = Integer.toString(angka);
 
@@ -85,7 +90,8 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
 
     public void drawSelectedCell(int left, int top, int right, int bottom){
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        int mColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
+        paint.setColor(mColor);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
 
@@ -96,7 +102,8 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
 
     public void drawOnMoveSelectedCell(int left, int top, int right, int bottom){
         Paint paint = new Paint();
-        paint.setColor(Color.GRAY);
+        int mColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorTertiary, Color.BLACK);
+        paint.setColor(mColor);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
         paint.setStrokeJoin(Paint.Join.ROUND);

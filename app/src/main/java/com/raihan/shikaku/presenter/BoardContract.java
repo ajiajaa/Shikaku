@@ -22,7 +22,7 @@ public interface BoardContract {
         void sendStopwatch(String time);
         void getSecond(int seconds);
         void vibrating();
-
+        void notPause();
 
     }
 
@@ -37,6 +37,8 @@ public interface BoardContract {
 
         void startStopwatch();
         void stopStopwatch();
+        void resumeStopwatch();
+        void pauseStopwatch();
     }
 
     interface Model {

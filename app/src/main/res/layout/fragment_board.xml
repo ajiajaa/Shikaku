@@ -9,15 +9,26 @@
         android:layout_height="wrap_content"
         android:id="@+id/time"
         android:text="0:00"
+        android:textColor="?attr/colorPrimary"
+        android:layout_below="@id/btn_pause"
         android:layout_alignParentRight="true"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:textSize="24sp"/>
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/button_pause"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/btn_pause"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:id="@+id/count"
         android:text="0"
+        android:textColor="?attr/colorPrimary"
         android:layout_above="@id/box"
         android:layout_margin="20dp"
         android:textSize="24sp"/>
@@ -27,13 +38,29 @@
         android:id="@+id/box"
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
+        android:padding="10dp"
         android:background="@drawable/border">
         <com.raihan.shikaku.view.design.BoardCanvas
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/iv_canvas"
-            android:layout_margin="10dp"/>
+            android:id="@+id/iv_canvas"/>
     </LinearLayout>
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toRightOf="@id/zoomSeekBar"
+        android:layout_below="@id/box"
+        android:id="@+id/pan"
+        android:visibility="gone"
+        android:background="@drawable/button_hand"/>
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toRightOf="@id/zoomSeekBar"
+        android:layout_below="@id/box"
+        android:id="@+id/pan1"
+        android:background="@drawable/button_hand1"
+        android:visibility="gone"/>
 
     <SeekBar
         android:layout_width="300dp"
@@ -41,5 +68,6 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/zoomSeekBar"
         android:max="100"
+        android:visibility="gone"
         android:layout_below="@id/box"></SeekBar>
 </RelativeLayout>

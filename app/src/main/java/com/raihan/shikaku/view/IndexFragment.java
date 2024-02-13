@@ -15,7 +15,6 @@ import com.raihan.shikaku.databinding.FragmentIndexBinding;
 public class IndexFragment extends Fragment implements View.OnClickListener{
     protected FragmentIndexBinding binding;
 
-
     public static IndexFragment newInstance(String title){
         IndexFragment fragment = new IndexFragment();
 
@@ -24,10 +23,15 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.binding = FragmentIndexBinding.inflate(inflater,container,false);
+        if(((MainActivity)getActivity()).isMusicOn){
+            this.binding.nomusic.setVisibility(View.GONE);
+        }else{
+            this.binding.music.setVisibility(View.GONE);
+        }
         View view = this.binding.getRoot();
-
         this.binding.play.setOnClickListener(this);
         this.binding.music.setOnClickListener(this);
+        this.binding.nomusic.setOnClickListener(this);
         this.binding.how.setOnClickListener(this);
 
         return view;
@@ -39,11 +43,19 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
             ((MainActivity)getActivity()).changePage(2);
         }
         if(this.binding.music== v){
-            FinishDialogFragment fdf= new FinishDialogFragment();
-            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-            fdf.show(ft,"a");
+            ((MainActivity)getActivity()).musicSetting();
+            binding.music.setVisibility(View.GONE);
+            binding.nomusic.setVisibility(View.VISIBLE);
+        }
+        if(this.binding.nomusic== v){
+            ((MainActivity)getActivity()).musicSetting();
+            binding.nomusic.setVisibility(View.GONE);
+            binding.music.setVisibility(View.VISIBLE);
         }
         if(this.binding.how== v){
+            CreditDialogFragment cdf = new CreditDialogFragment();
+            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+            cdf.show(ft,"a");
         }
     }
 

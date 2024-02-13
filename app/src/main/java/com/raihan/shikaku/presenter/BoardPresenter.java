@@ -29,6 +29,9 @@ BoardPresenter implements BoardContract.Presenter {
     private Level lvl;
 
     private CountDownTimer countDownTimer;
+    private boolean isStopwatchRunning;
+    private long elapsedTime; // Menyimpan waktu terakhir saat stopwatch di-pause
+
 
     private String formattedTime;
 
@@ -40,6 +43,8 @@ BoardPresenter implements BoardContract.Presenter {
     public BoardPresenter(BoardContract.View view) {
         this.view = view;
         this.model = new BoardModel();
+        this.isStopwatchRunning= false;
+        this.elapsedTime = 0;
     }
 
     @Override
@@ -202,9 +207,9 @@ BoardPresenter implements BoardContract.Presenter {
     //timer thingy
     @Override
     public void startStopwatch() {
+        this.elapsedTime= 0;
         this.formattedTime= "";
         countDownTimer = new CountDownTimer(Long.MAX_VALUE, 1000) { // Setiap 1000 milidetik (1 detik)
-            long elapsedTime = 0;
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -217,14 +222,43 @@ BoardPresenter implements BoardContract.Presenter {
                 // Metode ini dipanggil saat timer selesai (meskipun tidak diaktifkan di sini)
             }
         }.start();
+        isStopwatchRunning = true;
     }
 
     @Override
     public void stopStopwatch() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
+            isStopwatchRunning = false;
             calculateScore();
+        }
+    }
+    @Override
+    public void pauseStopwatch() {
+        if (countDownTimer != null && isStopwatchRunning) {
+            countDownTimer.cancel();
+            isStopwatchRunning = false;
+        }
+    }
 
+    // Implementasi metode resumeStopwatch()
+    @Override
+    public void resumeStopwatch() {
+        if (!isStopwatchRunning) {
+            countDownTimer = new CountDownTimer(Long.MAX_VALUE - elapsedTime, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    elapsedTime = Long.MAX_VALUE - millisUntilFinished;
+                    updateStopwatch(elapsedTime);
+                }
+
+                @Override
+                public void onFinish() {
+                    // Metode ini dipanggil saat timer selesai (meskipun tidak diaktifkan di sini)
+                }
+            }.start();
+            isStopwatchRunning = true;
+            view.notPause();
         }
     }
 

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.raihan.shikaku.MainActivity;
 import com.raihan.shikaku.databinding.FragmentDialogFinishBinding;
+import com.raihan.shikaku.presenter.BoardPresenter;
 
 public class FinishDialogFragment extends DialogFragment implements View.OnClickListener{
     protected FragmentDialogFinishBinding binding;
@@ -22,33 +23,47 @@ public class FinishDialogFragment extends DialogFragment implements View.OnClick
     private static int level;
     private static int waktu;
     private static String waktuText;
-    public static FinishDialogFragment newInstance(int gridSize, int level, int waktu, String waktuText){
+    private static boolean isPause;
+    private static BoardPresenter presenter;
+    public static FinishDialogFragment newInstance(BoardPresenter presenter, int gridSize, int level, int waktu, String waktuText, boolean isPause){
         FinishDialogFragment fragment = new FinishDialogFragment();
         FinishDialogFragment.gridSize = gridSize;
         FinishDialogFragment.level= level;
         FinishDialogFragment.waktu= waktu;
         FinishDialogFragment.waktuText= waktuText;
+        FinishDialogFragment.isPause= isPause;
+        FinishDialogFragment.presenter= presenter;
         return fragment;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         this.binding = FragmentDialogFinishBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
-
-        this.binding.congrats.setText(this.binding.congrats.getText().toString()+waktuText);
+        setCancelable(false);
+        if (isPause){
+            binding.star1.setVisibility(View.GONE);
+            binding.star2.setVisibility(View.GONE);
+            binding.star3.setVisibility(View.GONE);
+            binding.congrats.setVisibility(View.GONE);
+            binding.nextBtn.setVisibility(View.GONE);
+        }else{
+            this.binding.congrats.setText(this.binding.congrats.getText().toString()+waktuText);
+            this.binding.btnPlay.setVisibility(View.GONE);
+            this.binding.pause.setVisibility(View.GONE);
+        }
         Log.d("TAG", "waktu: "+waktu);
         switch (gridSize){
-            case 5: if(waktu>4 && waktu<10){
+            case 5: if(waktu>4 && waktu<=10){
                 binding.star3.setVisibility(View.INVISIBLE);
             }else if(waktu>10){
                 binding.star1.setVisibility(View.INVISIBLE); binding.star3.setVisibility(View.INVISIBLE);
             }
-            case 10: if(waktu>25 && waktu<35){
+            case 10: if(waktu>25 && waktu<=35){
                 binding.star3.setVisibility(View.INVISIBLE);
             }else if(waktu>35){
                 binding.star1.setVisibility(View.INVISIBLE); binding.star3.setVisibility(View.INVISIBLE);
             }
-            case 15: if(waktu>85 && waktu<115){
+            case 15: if(waktu>85 && waktu<=115){
                 binding.star3.setVisibility(View.INVISIBLE);
             }else if(waktu>115){
                 binding.star1.setVisibility(View.INVISIBLE); binding.star3.setVisibility(View.INVISIBLE);
@@ -57,6 +72,7 @@ public class FinishDialogFragment extends DialogFragment implements View.OnClick
 
         binding.nextBtn.setOnClickListener(this);
         binding.menuBtn.setOnClickListener(this);
+        binding.btnPlay.setOnClickListener(this);
         return view;
     }
 
@@ -74,6 +90,10 @@ public class FinishDialogFragment extends DialogFragment implements View.OnClick
         if(view==binding.menuBtn){
             ((MainActivity)getActivity()).changePage(1);
             getParentFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            dismiss();
+        }
+        if(view==binding.btnPlay) {
+            presenter.resumeStopwatch();
             dismiss();
         }
     }

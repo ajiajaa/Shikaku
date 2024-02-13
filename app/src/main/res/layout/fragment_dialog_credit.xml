@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/border">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:id="@+id/box"
+        android:textAlignment="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rules"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1. The divided square areas must contain a single number indicating the area of the square region."
+            android:textColor="?attr/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2. The area of the divided square must be equal to the number contained within it."
+            android:textColor="?attr/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3. No divided square area should overlap with another divided square area."
+            android:textColor="?attr/colorSecondary"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:layout_below="@id/box">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Credits"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mahasiswa Pengembang :"
+            android:textColor="?attr/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Muhammad Fazri Raihan PB"
+            android:layout_marginLeft="20dp"
+            android:textColor="?attr/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dosen Pembimbing :"
+            android:textColor="?attr/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dr. rer. nat. Cecilia E Nugraheni"
+            android:layout_marginLeft="20dp"
+            android:textColor="?attr/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dosen Penguji :"
+            android:textColor="?attr/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Husnul Hakim, M.T."
+            android:layout_marginLeft="20dp"
+            android:textColor="?attr/colorSecondary"/>
+    </LinearLayout>
+</RelativeLayout>

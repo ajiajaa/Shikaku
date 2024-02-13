@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@drawable/border">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,12 +35,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/starBox"
-        android:id="@+id/textBox">
+        android:id="@+id/textBox"
+        android:layout_centerHorizontal="true">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Congratulations! You have solved the puzzle in "
+            android:textColor="?attr/colorPrimary"
+            android:text="Congratulations! You have conquered the puzzle in "
             android:id="@+id/congrats"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAUSE"
+            android:layout_margin="10dp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp"
+            android:id="@+id/pause"
             android:textAlignment="center"/>
     </LinearLayout>
     <LinearLayout
@@ -59,7 +71,11 @@
             android:text="Next"
             android:id="@+id/next_btn"
             android:layout_toLeftOf="@id/menu_btn"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:id="@+id/btn_play"
+            android:layout_toLeftOf="@id/menu_btn"/>
     </LinearLayout>
-
-
 </RelativeLayout>

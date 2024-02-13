@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:textSize="30sp"
+        android:textColor="?attr/colorPrimary"
         android:id="@+id/pagenamelevel"
         android:text="Levels">
     </TextView>
@@ -24,15 +25,11 @@
         app:layoutManager="LinearLayoutManager"
         android:background="@drawable/border"
         tools:listitem="@layout/fragment_level" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/list"
-        android:textSize="20sp"
-        android:layout_marginTop="30dp"
-        android:id="@+id/credit"
-        android:text="Informatika UNPAR">
-    </TextView>
-
+    <View
+        android:layout_width="109dp"
+        android:layout_height="28dp"
+        android:background="@drawable/logof"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
