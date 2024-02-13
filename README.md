@@ -3,7 +3,7 @@
 
 Repository to complete my undergraduate thesis.
 
-Progress at 75% (kinda).
+Progress at 85% (kinda).
 
 Task list :
 1. Non-overlap rectangles, if overlap the existing rectangle disappeared. (Done! 13/12/2023)
