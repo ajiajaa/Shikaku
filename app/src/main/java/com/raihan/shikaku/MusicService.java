@@ -7,8 +7,6 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import com.raihan.shikaku.R;
-
 public class MusicService extends Service {
     private MediaPlayer mediaPlayer;
 

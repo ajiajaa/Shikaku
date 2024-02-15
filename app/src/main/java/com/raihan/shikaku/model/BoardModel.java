@@ -18,15 +18,13 @@ public class BoardModel implements BoardContract.Model {
     private int width;
     private int height;
 
-    private PointF start;// digunakan untuk simpan titik awal sentuhan
-
-
-
+    //mendapatkan gridSize dari presenter
     @Override
     public void getGridSize(int gridSize) {
         this.gridSize= gridSize;
     }
 
+    //mendapatkan koordinat rectangle untuk dikonversikan kebentuk papan 2D
     @Override
     public HashMap<String, Integer> getRectangleCoordinates(PointF start, float e1, float e2) {
 
@@ -54,7 +52,7 @@ public class BoardModel implements BoardContract.Model {
 
         return hm;
     }
-
+    //untuk kalkulasi papan
     @Override
     public HashMap<String, Integer> calculateBoard() {
         HashMap<String, Integer> hm= new HashMap<>();
@@ -87,10 +85,12 @@ public class BoardModel implements BoardContract.Model {
 
     }
 
-
+    //konversi kooordinat ke bidang papan.
     private int coordinateConvert(float x) {
         return (int) (x / cellSize);
     }
+
+    //untuk check apakah coordinate yang diberikan melebihi ukuran papan atau tidak, jika ya ganti dengan batas ukuran papan
 
     private int checkMin(int input) {
         if(input<0){

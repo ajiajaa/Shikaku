@@ -47,6 +47,7 @@ BoardPresenter implements BoardContract.Presenter {
         this.elapsedTime = 0;
     }
 
+    //menangani sentuhan dari view, dikalkulasi di model dan memproses hasil kalkulasi
     @Override
     public void onTouch(boolean isUp, PointF start, float e1, float e2) {
         if(start.x!=e1 && start.y!=e2){
@@ -64,11 +65,13 @@ BoardPresenter implements BoardContract.Presenter {
         lvl.readPuzzles(level-1);
     }
 
+    // untuk menggambar grid dan angka
     @Override
-    public void onProcessDrawingBoard() {
-        this.hm = this.model.calculateBoard();
+    public void onProcessDrawingBoard(boolean isReset) {
+        if(!isReset){
+            this.hm = this.model.calculateBoard();
+        }
 
-        //        untuk menggambar grid
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
 //                  agar grid berada ditengah image view
@@ -90,7 +93,7 @@ BoardPresenter implements BoardContract.Presenter {
             this.view.drawNumbers(angkaList.get(i).getValue(), left, top, right, bottom);
         }
     }
-
+    //memproses pembuatan persegi maupun saat disentuh atau ketika sudah tidak disentuh
     @Override
     public void onProcessSelectedCell() {
         int startRow= Math.min(hm1.get("startRow"), hm1.get("endRow"));
@@ -137,16 +140,6 @@ BoardPresenter implements BoardContract.Presenter {
                 rectList.add(rect);
                 this.view.setSelectedCell(rectList);
                 view.vibrating();
-
-                //Check apakah sudah menyelesaikan papan, jika sudah check jawaban
-                Checker checker= new Checker(this.rectList, this.lvl);
-                int totalRecCell= 0;
-                for (int i= 0; i<rectList.size(); i++){
-                    totalRecCell+= rectList.get(i).getTotalCell();
-                }
-                if(rectList.size()==lvl.getCellNumbers().size() && totalRecCell==Math.pow(gridSize,2)){
-                    view.onToastResult(checker.validateBoard());
-                }
             }else{
                 this.view.drawOnMoveSelectedCell(left, top, right, bottom);
                 this.view.cellCounter(length);
@@ -155,7 +148,13 @@ BoardPresenter implements BoardContract.Presenter {
             this.view.cellCounter(0);
         }
     }
+    //mengirimkan persegi mana saja yang menyalahi aturan setelah dicek
+    @Override
+    public void sendWrongRect(ArrayList<Rectangle> wrongRect) {
+        view.getWrongRect(wrongRect);
+    }
 
+    //mengecek apakah persegi yang akan dibuat bertumpang tindih dengan persegi yang sudah ada
     private boolean isRectangleOverlapping(int startRow1, int startCol1, int endRow1, int endCol1,
                                            Rectangle rect2) {
         int left1 = Math.min(startRow1, endRow1);
@@ -183,11 +182,13 @@ BoardPresenter implements BoardContract.Presenter {
         this.model.getHeight(height);
     }
 
+    //me-reset isi kumpulan persegi untuk level selanjutnya
     @Override
     public void newRectList() {
         this.rectList= new ArrayList<>();
     }
 
+    //menkonversikan kembali kebentuk koordinat untuk memudahkan penggambaran
     private int toCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
         if(isStart){
             return hm.get("offsetX") + add + Math.min(startCol, endCol) * hm.get("cellSize");
@@ -201,6 +202,19 @@ BoardPresenter implements BoardContract.Presenter {
             return hm.get("offsetY") + add + Math.min(startRow, endRow) * hm.get("cellSize");
         }else{
             return hm.get("offsetY") - add + (Math.max(startRow, endRow) + 1) * hm.get("cellSize");
+        }
+    }
+
+    @Override
+    public void checker() {
+        //Check apakah sudah menyelesaikan papan, jika sudah check jawaban
+        Checker checker= new Checker(this, this.rectList, this.lvl);
+        int totalRecCell= 0;
+        for (int i= 0; i<rectList.size(); i++){
+            totalRecCell+= rectList.get(i).getTotalCell();
+        }
+        if(totalRecCell==Math.pow(gridSize,2)){
+            view.onToastResult(checker.validateBoard());
         }
     }
 

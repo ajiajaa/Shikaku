@@ -38,15 +38,6 @@ public class LevelPresenter implements LevelContract.Presenter{
         }
     }
 
-    @Override
-    public void drawBoard(int chosenLevel) {
-        this.model.readPuzzles(chosenLevel);
-    }
-
-    // Metode untuk membersihkan referensi tampilan saat tampilan dihancurkan
-    public void detachView() {
-        this.view = null;
-    }
 
 
 }

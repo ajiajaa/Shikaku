@@ -66,10 +66,6 @@ public class Rectangle {
         return totalCell;
     }
 
-    public void setTotalCell(int cellCount) {
-        this.totalCell = cellCount;
-    }
-
     public int getStartRow() {
         return startRow;
     }

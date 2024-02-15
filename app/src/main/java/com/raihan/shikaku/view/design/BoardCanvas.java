@@ -26,7 +26,6 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
     private int strokeWidth = 7;// tebal stroke
     private int textSize = 64;// tebal stroke
 
-    private int gridSize;
     private Context context;
 
     public BoardCanvas(Context context, AttributeSet attributeSet) {
@@ -54,7 +53,7 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+        //agar height memiliki nilai yang sama dengan width
         int width = getMeasuredWidth();
         setMeasuredDimension(width, width);
     }
@@ -88,13 +87,17 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         mCanvas.drawText(angkaStr, textX, textY, textPaint);
     }
 
-    public void drawSelectedCell(int left, int top, int right, int bottom){
+    public void drawSelectedCell(boolean isWrong, int left, int top, int right, int bottom){
         Paint paint = new Paint();
-        int mColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
+        int mColor;
+        if(!isWrong){
+            mColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
+        }else{
+            mColor = Color.RED;
+        }
         paint.setColor(mColor);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
-
         mCanvas.drawRect(left, top, right, bottom, paint);
         invalidate();
 
@@ -111,12 +114,5 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
 
         mCanvas.drawRect(left, top, right, bottom, paint);
         invalidate();
-    }
-    public void setGridSize(int gridSize){
-        this.gridSize= gridSize;
-        if(gridSize!=5){
-            textSize= 32;
-            strokeWidth= 5;
-        }
     }
 }

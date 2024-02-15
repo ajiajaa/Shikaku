@@ -18,6 +18,7 @@ public interface BoardContract {
         void drawOnMoveSelectedCell(int left, int top, int right, int bottom);
         void cellCounter(int ctr);
         void overlapChecker(boolean isOverlap);
+        void getWrongRect(ArrayList<Rectangle> wrongRect);
         void onToastResult(boolean isValid);
         void sendStopwatch(String time);
         void getSecond(int seconds);
@@ -29,16 +30,17 @@ public interface BoardContract {
     interface Presenter {
         void onTouch(boolean isUp, PointF start, float e1, float e2);
         void sendGridSize(Context context, int gridSize, int level);
-        void onProcessDrawingBoard();
+        void onProcessDrawingBoard(boolean isReset);
         void onProcessSelectedCell();
+        void sendWrongRect(ArrayList<Rectangle> wrongRect);
         void sendWidth(int width);
         void sendHeight(int height);
         void newRectList();
-
         void startStopwatch();
         void stopStopwatch();
         void resumeStopwatch();
         void pauseStopwatch();
+        void checker();
     }
 
     interface Model {

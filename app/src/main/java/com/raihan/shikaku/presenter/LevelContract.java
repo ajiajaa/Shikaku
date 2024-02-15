@@ -15,8 +15,6 @@ public interface LevelContract {
         void sendDifficulty(int difficulty);
         void requestData();
         void onItemClick(int value);
-        void drawBoard(int chosenLevel);
-        void detachView();
     }
 
     interface Model{

@@ -1,41 +1,43 @@
 package com.raihan.shikaku.model;
 
-import android.util.Log;
+import com.raihan.shikaku.presenter.BoardPresenter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Checker {
     private  ArrayList<Rectangle> rectList;
     private Level lvl;
+    private BoardPresenter presenter;
 
-    public Checker(ArrayList<Rectangle> rectList, Level lvl){
+    public Checker(BoardPresenter presenter, ArrayList<Rectangle> rectList, Level lvl){
+        this.presenter = presenter;
         this.rectList= rectList;
         this.lvl= lvl;
     }
     public boolean validateBoard(){
-        Map<Angka, Rectangle> pemetaan = new HashMap<>();
         ArrayList<Angka> angkaList= lvl.getCellNumbers();
-        int count = 1;
+        ArrayList<Rectangle> correctRect= new ArrayList<>();
+        ArrayList<Rectangle> wrongRect= new ArrayList<>(rectList);
         for (Rectangle r : rectList) {
+            ArrayList<Angka> tempAngka= new ArrayList<>();
             for (Angka a : lvl.getCellNumbers()) {
                 if (a.getRow() >= r.getStartRow() && a.getRow() <= r.getEndRow()
-                        && a.getColumn() >= r.getStartCol() && a.getColumn() <= r.getEndCol()
-                        && a.getValue() == r.getTotalCell()) {
-                    pemetaan.put(a, r);
-                    System.out.println("rect ke-"+count+": "+r.getTotalCell()+", "+a.getValue());
-                    count++;
-                    break;
+                        && a.getColumn() >= r.getStartCol() && a.getColumn() <= r.getEndCol()) {
+                    tempAngka.add(a);
                 }
             }
+            if(tempAngka.size()==1 && tempAngka.get(0).getValue() == r.getTotalCell()){
+                correctRect.add(r);
+            }
         }
-
-        if(pemetaan.size()!=angkaList.size()) {
-            System.out.println("Pemetaan tidak satu ke satu");
+        if(correctRect.size()!=angkaList.size()) {
+            System.out.println("Pemetaan tidak bijection");
+            wrongRect.removeAll(correctRect);
+            presenter.sendWrongRect(wrongRect);
             return false;
         }
-        System.out.println("Pemetaan satu ke satu");
+        System.out.println("Pemetaan bijection");
         return true;
     }
+
 }
