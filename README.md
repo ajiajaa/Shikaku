@@ -29,5 +29,7 @@ Level :
 
 Tested :
 - Android 13 (Poco F3) : safe
+- Android 13 (Pixel 2) : safe
 - Android 10 (Redmi Note 7) : safe
+- Android 7.0 (Pixel) : safe
 - Android 7.1.2 (Emulator LD Player 4): bug
