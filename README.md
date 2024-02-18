@@ -22,7 +22,7 @@ Task list :
 11. Credits page (Done! 11/02/2024)
 12. Tutorial
 
-Level :
+Available levels :
 - Easy (5x5) : 15 levels
 - Medium (5x5) : 15 levels
 - Hard (15x15) : 1 levels
