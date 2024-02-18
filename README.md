@@ -22,6 +22,11 @@ Task list :
 11. Credits page (Done! 11/02/2024)
 12. Tutorial
 
+Level :
+Easy (5x5) : 15 levels
+Medium (5x5) : 15 levels
+Hard (15x15) : 1 levels
+
 Tested :
 - Android 13 (Poco F3) : safe
 - Android 10 (Redmi Note 7) : safe
