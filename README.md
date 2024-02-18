@@ -3,7 +3,7 @@
 
 Repository to complete my undergraduate thesis.
 
-Progress at 85% (kinda).
+Progress at 90% (kinda).
 
 Task list :
 1. Non-overlap rectangles, if overlap the existing rectangle disappeared. (Done! 13/12/2023)
@@ -12,7 +12,7 @@ Task list :
 4. choose difficulty and level (Done! 26/01/2024)
 5. finish window (Done! 29/01/2024)
 6. after puzzle finish, go to the next puzzle (Done! 29/01/2024)
-7. Hint
+7. Hint (Done! 14/02/2024)+
 8. additional features :
      - timer (Done! 29/01/2024)
      - Music (Done! 09/02/2024)
