@@ -115,4 +115,10 @@ public class BoardCanvas extends androidx.appcompat.widget.AppCompatImageView {
         mCanvas.drawRect(left, top, right, bottom, paint);
         invalidate();
     }
+    public void setGridSize(int gridSize){
+        if(gridSize!=5){
+            textSize= 32;
+            strokeWidth= 5;
+        }
+    }
 }

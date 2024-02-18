@@ -93,6 +93,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                 // We use a String here, but any type that can be put in a Bundle is supported.
                 gridSize = bundle.getInt("GridSize");
                 level = bundle.getInt("level");
+                binding.ivCanvas.setGridSize(gridSize);
                 Log.d("TAG", "onFragmentResult: "+gridSize);
                 presenter.sendGridSize(getContext(), gridSize, level);
                 if(gridSize==5){
