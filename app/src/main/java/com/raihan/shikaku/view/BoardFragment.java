@@ -138,8 +138,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                 }
             });
         }else{
-            binding.box.setVisibility(View.GONE);
-            binding.count.setVisibility(View.GONE);
+            binding.box.setVisibility(View.INVISIBLE);
+            binding.count.setVisibility(View.INVISIBLE);
         }
         this.binding.nextBtn.setOnClickListener(this);
         this.binding.btnPause.setOnClickListener(this);
