@@ -3,7 +3,7 @@
 
 Repository to complete my undergraduate thesis.
 
-Progress at 90% (kinda).
+Progress at 98% (kinda).
 
 Task list :
 1. Non-overlap rectangles, if overlap the existing rectangle disappeared. (Done! 13/12/2023)
@@ -20,7 +20,9 @@ Task list :
 9. UI---Theme based on wallpaper (Done! 11/02/2024)
 10. MVP Architecture (Done! 19/09/2023)
 11. Credits page (Done! 11/02/2024)
-12. Tutorial
+12. Tutorial (Done! 26/02/2024)
+
+Bugs : Zoom and pan (not visible so far)
 
 Available levels :
 - Easy (5x5) : 15 levels
