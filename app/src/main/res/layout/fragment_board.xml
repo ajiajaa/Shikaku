@@ -7,6 +7,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/level"
+        android:text="Level "
+        android:textFontWeight="500"
+        android:textColor="?attr/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:textSize="24sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/time"
         android:text="0:00"
         android:textColor="?attr/colorPrimary"
@@ -36,8 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/box"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/chara"
+        android:layout_margin="3dp"
         android:padding="10dp"
         android:background="@drawable/border">
         <com.raihan.shikaku.view.design.BoardCanvas
@@ -45,6 +56,35 @@
             android:layout_height="wrap_content"
             android:id="@+id/iv_canvas"/>
     </LinearLayout>
+    <View
+        android:layout_width="192dp"
+        android:layout_height="200dp"
+        android:background="@drawable/chara"
+        android:id="@+id/chara"
+        android:layout_alignParentRight="true"/>
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/tv_tutor"
+        android:text="@string/tutor0"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/border"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/next_btn"
+        android:layout_below="@id/box"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/btn_reset"
+        android:background="@drawable/button_reset"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/box"/>
     <Button
         android:layout_width="30dp"
         android:layout_height="30dp"

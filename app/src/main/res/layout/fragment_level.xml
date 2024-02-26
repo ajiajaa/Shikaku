@@ -4,18 +4,27 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_centerInParent="true"
-    android:textAlignment="center">
+    android:textAlignment="center"
+    android:background="@drawable/border"
+    android:layout_margin="10dp">
 
     <TextView
         android:id="@+id/item_number"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="10dp"
         android:padding="7dp"
-        android:background="@drawable/border"
         android:layout_centerInParent="true"
         android:textSize="24sp"
         android:textColor="?attr/colorPrimary"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceListItem" />
+    <View
+        android:layout_alignRight="@id/item_number"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:id="@+id/lock"
+        android:background="@drawable/lock"></View>
+
 </RelativeLayout>

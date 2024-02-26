@@ -12,12 +12,16 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.raihan.shikaku.MainActivity;
+import com.raihan.shikaku.R;
 import com.raihan.shikaku.databinding.FragmentBoardBinding;
 import com.raihan.shikaku.model.Rectangle;
 import com.raihan.shikaku.presenter.BoardContract;
@@ -49,6 +53,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     private boolean isPause;
     private boolean isPanning;
 
+    private int tutorialLevel;
+    private int tutorialCount;
+
     public static BoardFragment newInstance(String title){
         BoardFragment fragment = new BoardFragment();
 
@@ -58,12 +65,25 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         super.onCreate(savedInstanceState);
         this.binding = FragmentBoardBinding.inflate(inflater,container,false);
         View view = this.binding.getRoot();
+        tutorialCount=1;
+        tutorialLevel=1;
 
         this.presenter= new BoardPresenter(this);
         this.binding.ivCanvas.setOnTouchListener(this);
         vibrator = (Vibrator) requireContext().getSystemService(getContext().VIBRATOR_SERVICE);
         zoomSeekBar = binding.zoomSeekBar;
         firstOpen = true;
+
+        if(isTutorial()){
+            binding.btnReset.setVisibility(View.GONE);
+            binding.time.setVisibility(View.GONE);
+            binding.level.setVisibility(View.GONE);
+            binding.btnPause.setVisibility(View.GONE);
+        }else{
+            binding.chara.setVisibility(View.GONE);
+            binding.tvTutor.setVisibility(View.GONE);
+            binding.nextBtn.setVisibility(View.GONE);
+        }
 
         zoomSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -87,39 +107,51 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
             }
         });
-        getParentFragmentManager().setFragmentResultListener("postKey", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                // We use a String here, but any type that can be put in a Bundle is supported.
-                gridSize = bundle.getInt("GridSize");
-                level = bundle.getInt("level");
-                binding.ivCanvas.setGridSize(gridSize);
-                Log.d("TAG", "onFragmentResult: "+gridSize);
-                presenter.sendGridSize(getContext(), gridSize, level);
-                if(gridSize==5){
-                    binding.zoomSeekBar.setVisibility(View.GONE);
-                    binding.pan.setVisibility(View.GONE);
+        if(!isTutorial()){
+            getParentFragmentManager().setFragmentResultListener("postKey", this, new FragmentResultListener() {
+                @Override
+                public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                    // We use a String here, but any type that can be put in a Bundle is supported.
+                    gridSize = bundle.getInt("GridSize");
+                    level = bundle.getInt("level");
+                    binding.ivCanvas.setGridSize(gridSize);
+                    binding.level.setText("Level "+level);
+                    Log.d("TAG", "onFragmentResult: "+gridSize);
+                    presenter.sendGridSize(getContext(), gridSize, level);
+                    if(gridSize==5){
+                        binding.zoomSeekBar.setVisibility(View.GONE);
+                        binding.pan.setVisibility(View.GONE);
+                    }
+
+                    // untuk case saat menekan next level di dialog finish.
+                    updateZoom(1.0f);
+                    zoomSeekBar.setProgress(0);
+                    rectList= null;
+                    presenter.newRectList();
+                    initCanvas();
+
+                    seconds= 0;
+                    binding.time.setText("0:00");
+                    presenter.startStopwatch();
+                    isFinish = false;
+                    isPause = false;
                 }
-
-                // untuk case saat menekan next level di dialog finish.
-                updateZoom(1.0f);
-                zoomSeekBar.setProgress(0);
-                rectList= null;
-                presenter.newRectList();
-                initCanvas();
-
-                seconds= 0;
-                binding.time.setText("0:00");
-                presenter.startStopwatch();
-                isFinish = false;
-                isPause = false;
-            }
-        });
+            });
+        }else{
+            binding.box.setVisibility(View.GONE);
+            binding.count.setVisibility(View.GONE);
+        }
+        this.binding.nextBtn.setOnClickListener(this);
         this.binding.btnPause.setOnClickListener(this);
+        this.binding.btnReset.setOnClickListener(this);
         this.binding.pan.setOnClickListener(this);
         this.binding.pan1.setOnClickListener(this);
 
         return view;
+    }
+
+    private boolean isTutorial() {
+        return ((MainActivity)getActivity()).preferences.getBoolean("isTutorial", true);
     }
 
     //inisiasi canvas pertama kali
@@ -131,6 +163,20 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                     // Kode ini akan dijalankan setelah ImageView siap
                     presenter.sendWidth(binding.ivCanvas.getWidth());
                     presenter.sendHeight(binding.ivCanvas.getHeight());
+                    if(isTutorial()){
+                        if(tutorialCount==3){
+                            binding.ivCanvas.setGridSize(5);
+                            presenter.sendGridSize(getContext(), 5, 1);
+                            presenter.newRectList();
+                            rectList= null;
+                            Log.d("TAG", "run: ");
+                        }else{
+                            binding.ivCanvas.setGridSize(2);
+                            presenter.sendGridSize(getContext(), 2, tutorialLevel);
+                            presenter.newRectList();
+                            rectList= null;
+                        }
+                    }
                     binding.ivCanvas.background();
                     presenter.onProcessDrawingBoard(false);
                     if(rectList!=null){
@@ -227,11 +273,34 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
     //ketika selesai dan jawaban benar
     @Override
-    public void onToastResult(boolean isValid) {
+    public void checkerResult(boolean isValid) {
         if(isValid) {
-            presenter.stopStopwatch();
-            showDialog(false);
-            this.isFinish= true;
+            if(isTutorial()){
+                if(tutorialCount==8){
+                    this.binding.tvTutor.setText(getString(R.string.tutor8));
+                    this.binding.nextBtn.setVisibility(View.VISIBLE);
+                    tutorialCount++;
+                }
+                if(tutorialCount==10){
+                    this.binding.tvTutor.setText(getString(R.string.tutor10));
+                    this.binding.nextBtn.setVisibility(View.VISIBLE);
+                    tutorialCount++;
+                }
+            }else{
+                if(gridSize==5 && ((MainActivity)getActivity()).preferences.getInt("level_easy", 1)==level)
+                    ((MainActivity)getActivity()).preferences.edit().putInt("level_easy", level+1).apply();
+
+                if(gridSize==10)
+                    ((MainActivity)getActivity()).preferences.edit().putInt("level_medium", level+1).apply();
+
+                if(gridSize==15)
+                    ((MainActivity)getActivity()).preferences.edit().putInt("level_hard", level+1).apply();
+
+
+                presenter.stopStopwatch();
+                this.isFinish= true;
+                showDialog(false);
+            }
         }
     }
 
@@ -268,9 +337,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     @Override
     public void setSelectedCell(List<Rectangle> rectList) {
         this.rectList= rectList;
-
         drawSelectedcell();
-
     }
 
     private void drawSelectedcell() {
@@ -302,13 +369,16 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     @Override
     public void onResume(){
         super.onResume();
-        if(!firstOpen && !isFinish && !isPause){
-            showDialog(true);
-        }else{
-            this.firstOpen = false;
-            zoomSeekBar.setProgress(0);
-            updateZoom(1.0f);
+        if(!isTutorial()){
+            if(!firstOpen && !isFinish && !isPause){
+                showDialog(true);
+            }else{
+                this.firstOpen = false;
+                zoomSeekBar.setProgress(0);
+                updateZoom(1.0f);
+            }
         }
+
     }
     public void vibrate() {
         if (vibrator != null) {
@@ -352,6 +422,54 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             this.isPanning = false;
             binding.pan.setVisibility(View.VISIBLE);
             binding.pan1.setVisibility(View.GONE);
+        }
+        if(view == binding.btnReset){
+            rectList= null;
+            presenter.newRectList();
+            resetCanvas();
+        }
+        if(view == binding.nextBtn){
+            Log.d("TAG", "onClick: "+tutorialCount);
+            if(tutorialCount == 1){
+                this.binding.tvTutor.setText(getString(R.string.tutor1));
+            }
+            if(tutorialCount == 2){
+                this.binding.tvTutor.setText(getString(R.string.tutor2));
+                this.binding.box.setVisibility(View.VISIBLE);
+                this.binding.count.setVisibility(View.VISIBLE);
+                initCanvas();
+            }
+            if(tutorialCount == 3){
+                this.binding.tvTutor.setText(getString(R.string.tutor3));
+                initCanvas();
+
+            }
+            if(tutorialCount == 4){
+                this.binding.tvTutor.setText(getString(R.string.tutor4));
+            }
+            if(tutorialCount == 5){
+                this.binding.tvTutor.setText(getString(R.string.tutor5));
+            }
+            if(tutorialCount == 6){
+                this.binding.tvTutor.setText(getString(R.string.tutor6));
+            }
+            if(tutorialCount == 7){
+                this.binding.tvTutor.setText(getString(R.string.tutor7));
+                initCanvas();
+                this.binding.nextBtn.setVisibility(View.GONE);
+            }
+            if(tutorialCount == 9){
+                this.binding.tvTutor.setText(getString(R.string.tutor9));
+                tutorialLevel++;
+                initCanvas();
+                this.binding.nextBtn.setVisibility(View.GONE);
+            }
+            if(tutorialCount == 11){
+                ((MainActivity)getActivity()).changePage(0);
+                ((MainActivity)getActivity()).preferences.edit().putBoolean("isTutorial", false).apply();
+            }
+            tutorialCount++;
+
         }
     }
 }

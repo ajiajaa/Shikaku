@@ -19,8 +19,9 @@
         android:layout_height="wrap_content"
         android:text="Easy"
         android:id="@+id/btn5"
+        android:layout_below="@id/logo"
         android:drawableLeft="@drawable/button_play_default24"
-        android:layout_centerInParent="true">
+        android:layout_centerHorizontal="true">
     </Button>
     <Button
         android:layout_width="match_parent"

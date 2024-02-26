@@ -14,8 +14,7 @@ import com.raihan.shikaku.model.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class
-BoardPresenter implements BoardContract.Presenter {
+public class BoardPresenter implements BoardContract.Presenter {
 
     private BoardContract.View view;
     private BoardContract.Model model;
@@ -214,14 +213,14 @@ BoardPresenter implements BoardContract.Presenter {
             totalRecCell+= rectList.get(i).getTotalCell();
         }
         if(totalRecCell==Math.pow(gridSize,2)){
-            view.onToastResult(checker.validateBoard());
+            view.checkerResult(checker.validateBoard());
         }
     }
 
     //timer thingy
     @Override
     public void startStopwatch() {
-        this.elapsedTime= 0;
+        this.elapsedTime= -1000;
         this.formattedTime= "";
         countDownTimer = new CountDownTimer(Long.MAX_VALUE, 1000) { // Setiap 1000 milidetik (1 detik)
 

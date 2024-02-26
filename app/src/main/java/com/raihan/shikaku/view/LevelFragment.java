@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.raihan.shikaku.MainActivity;
 import com.raihan.shikaku.R;
@@ -95,25 +96,42 @@ public class LevelFragment extends Fragment implements LevelContract.View {
     public void showData(List<Integer> data) {
         levelData = data;
         // Menampilkan data ke RecyclerView
-        adapter = new MyItemRecyclerViewAdapter(data, new MyItemRecyclerViewAdapter.OnItemClickListener() {
+        adapter = new MyItemRecyclerViewAdapter(data, new MyItemRecyclerViewAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int value) {
                 presenter.onItemClick(value);
             }
-        });
+        },((MainActivity)getActivity()).preferences, difficulty);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void showItemClick(int value) {
+        if(difficulty==5)
+            if(((MainActivity)getActivity()).preferences.getInt("level_easy", 1)>=value)
+                change(value);
+            else Toast.makeText(getContext(), "Level locked!", Toast.LENGTH_SHORT).show();
+
+        if(difficulty==10)
+            if(((MainActivity)getActivity()).preferences.getInt("level_medium", 1)>=value)
+                change(value);
+            else Toast.makeText(getContext(), "Level locked!", Toast.LENGTH_SHORT).show();
+
+        if(difficulty==15)
+            if(((MainActivity)getActivity()).preferences.getInt("level_hard", 1)>=value)
+                change(value);
+            else Toast.makeText(getContext(), "Level locked!", Toast.LENGTH_SHORT).show();
+
+        Log.d("Item Clicked", "Value: " + value +" & diff: "+difficulty);
+    }
+
+    private void change(int value) {
         Bundle result = new Bundle();
         result.putInt("GridSize", difficulty);
         result.putInt("level", value);
         getParentFragmentManager().setFragmentResult("postKey", result);
 
         ((MainActivity)getActivity()).changePage(4);
-
-        Log.d("Item Clicked", "Value: " + value +" & diff: "+difficulty);
     }
 
 

@@ -1,5 +1,7 @@
 package com.raihan.shikaku.model;
 
+import android.util.Log;
+
 import com.raihan.shikaku.presenter.BoardPresenter;
 
 import java.util.ArrayList;
@@ -31,12 +33,12 @@ public class Checker {
             }
         }
         if(correctRect.size()!=angkaList.size()) {
-            System.out.println("Pemetaan tidak bijection");
+            Log.d("Output", "Pemetaan tidak bijection");
             wrongRect.removeAll(correctRect);
             presenter.sendWrongRect(wrongRect);
             return false;
         }
-        System.out.println("Pemetaan bijection");
+        Log.d("Output", "Pemetaan bijection");
         return true;
     }
 

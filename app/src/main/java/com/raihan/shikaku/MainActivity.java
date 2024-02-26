@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
 
     private boolean isMusicPlaying;
     public boolean isMusicOn;
-    private SharedPreferences preferences;
+    public SharedPreferences preferences;
 
 
     @Override
@@ -41,17 +41,22 @@ public class MainActivity extends AppCompatActivity{
         this.lf = lf.newInstance("Fragment Level");
         this.bf = bf.newInstance("Fragment Board");
 
-        preferences = this.getSharedPreferences("IFAPPS-Tubes02", Context.MODE_PRIVATE);
+        preferences = this.getSharedPreferences("Shikaku", Context.MODE_PRIVATE);
         isMusicOn  = preferences.getBoolean("isMusicOn",true);//second parameter default value.
         isMusicPlaying = true;
         if(isMusicOn){
             startMusicService();
         }
 
+
 //      page thingy
         this.fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction ft = this.fragmentManager.beginTransaction();
-        ft.add(R.id.fragment_container, this.ifg).commit();
+        if(preferences.getBoolean("isTutorial",true)){
+            ft.add(R.id.fragment_container, this.bf).commit();
+        }else{
+            ft.add(R.id.fragment_container, this.ifg).commit();
+        }
 
         setContentView(binding.getRoot());
     }
@@ -70,9 +75,11 @@ public class MainActivity extends AppCompatActivity{
     public void changePage(int page) {
         FragmentTransaction ft = this.fragmentManager.beginTransaction();
 
-        if (page == 1) {
+        if (page == 0) {
+            ft.replace(R.id.fragment_container, this.ifg);
+        } else if (page == 1) {
             ft.replace(R.id.fragment_container, this.ifg).addToBackStack(null);
-        } else if (page == 2) {
+        }else if (page == 2) {
             ft.replace(R.id.fragment_container, this.df).addToBackStack(null);
         }else if (page == 3) {
             this.lf.setArguments(null);

@@ -19,7 +19,7 @@ public interface BoardContract {
         void cellCounter(int ctr);
         void overlapChecker(boolean isOverlap);
         void getWrongRect(ArrayList<Rectangle> wrongRect);
-        void onToastResult(boolean isValid);
+        void checkerResult(boolean isValid);
         void sendStopwatch(String time);
         void getSecond(int seconds);
         void vibrating();

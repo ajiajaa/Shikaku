@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">Shikaku</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello, blank fragment</string>
+    <string name="tutor0">Hello, my fellow future UNPARians!\nMy name is WOVEY! I\'ll help you figure out what \'Shikaku\' is!</string>
+    <string name="tutor1">So, Shikaku is a board game that contains many cells with numbers in them.</string>
+    <string name="tutor2">Like the example below!</string>
+    <string name="tutor3">For this tutorial, let\'s use a 2x2 board.</string>
+    <string name="tutor4">Your job is to divide the board into rectangles.</string>
+    <string name="tutor5">Each rectangle contains only ONE number.</string>
+    <string name="tutor6">The number indicates how many cells are contained in the rectangle.</string>
+
+    <string name="tutor7">Try to create rectangles in this puzzle by swiping your finger and solve it.</string>
+    <string name="tutor8">Nice! You\'ve got this!</string>
+    <string name="tutor9">Now, solve this puzzle!</string>
+    <string name="tutor10">You\'re a rock! Now you\'re ready to conquer Shikaku!</string>
 </resources>
