@@ -12,9 +12,6 @@ public class BoardModel implements BoardContract.Model {
 
     //    untuk pengukuran
     private int cellSize;
-    private int minSize;
-    private int offsetX;
-    private int offsetY;
     private int width;
     private int height;
 
@@ -54,24 +51,11 @@ public class BoardModel implements BoardContract.Model {
     }
     //untuk kalkulasi papan
     @Override
-    public HashMap<String, Integer> calculateBoard() {
-        HashMap<String, Integer> hm= new HashMap<>();
-
-        this.minSize = Math.min(width, height); // ukuran minimum antara lebar dan tinggi dari permukaan image view di xml
+    public int calculateBoard() {
+        int minSize = Math.min(width, height); // ukuran minimum antara lebar dan tinggi dari permukaan image view di xml
         this.cellSize = minSize / gridSize; // ukuran sel
-        this.offsetX = (width - minSize) / 2; // jarak horizontal dari tepi ImageView ke grid
-        this.offsetY = (height - minSize) / 2; // jarak vertikal dari tepi ImageView ke grid
 
-        hm.put("offsetX", offsetX);
-        hm.put("offsetY", offsetY);
-        hm.put("cellSize", cellSize);
-
-        Log.d("TAG", "calculateBoard: offx "+offsetX);
-        Log.d("TAG", "calculateBoard: offy "+offsetY);
-
-        return hm;
-
-
+        return this.cellSize;
     }
 
     @Override

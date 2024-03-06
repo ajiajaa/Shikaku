@@ -46,7 +46,7 @@ public interface BoardContract {
     interface Model {
         void getGridSize(int gridSize);
         HashMap<String, Integer> getRectangleCoordinates(PointF start, float e1, float e2);
-        HashMap<String, Integer> calculateBoard();
+        int calculateBoard();
         void getWidth(int width);
         void getHeight(int height);
     }

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -36,23 +37,29 @@ public class DifficultyFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         int value= 1;
+        Bundle result = new Bundle();
         if(this.binding.btn5== v){
             value= 5;
-        }
-        if(this.binding.btn10== v){
+            //        kirim gridsize ke fragment board
+            result.putInt("difficulty", value);
+            getParentFragmentManager().setFragmentResult("requestKey", result);
+            ((MainActivity)getActivity()).changePage(3);
+        }else if(this.binding.btn10== v && ((MainActivity)getActivity()).preferences.getInt("level_easy", 1)>9){
             value= 10;
-        }
-        if(this.binding.btn15== v){
+            //        kirim gridsize ke fragment board
+            result.putInt("difficulty", value);
+            getParentFragmentManager().setFragmentResult("requestKey", result);
+            ((MainActivity)getActivity()).changePage(3);
+        }else if(this.binding.btn15== v && ((MainActivity)getActivity()).preferences.getInt("level_medium", 1)>9){
             value= 15;
+            //        kirim gridsize ke fragment board
+            result.putInt("difficulty", value);
+            getParentFragmentManager().setFragmentResult("requestKey", result);
+            ((MainActivity)getActivity()).changePage(3);
+        }else{
+            Toast.makeText(getActivity(), "Unlock level 10 in previous difficulty first!", Toast.LENGTH_SHORT).show();
         }
-//        kirim gridsize ke fragment board
-        Bundle result = new Bundle();
-        result.putInt("difficulty", value);
-        result.putBoolean("difficultyb", true);
-        Log.d("TAG", "onClickDiffrag: value="+ value);
-        getParentFragmentManager().setFragmentResult("requestKey", result);
 
-        ((MainActivity)getActivity()).changePage(3);
     }
 
 }

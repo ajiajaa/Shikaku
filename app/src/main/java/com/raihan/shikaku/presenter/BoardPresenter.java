@@ -19,7 +19,7 @@ public class BoardPresenter implements BoardContract.Presenter {
     private BoardContract.View view;
     private BoardContract.Model model;
 
-    private HashMap<String, Integer> hm;
+    private int cellSize;
     private HashMap<String, Integer> hm1;
 
     private boolean isUp;
@@ -68,7 +68,7 @@ public class BoardPresenter implements BoardContract.Presenter {
     @Override
     public void onProcessDrawingBoard(boolean isReset) {
         if(!isReset){
-            this.hm = this.model.calculateBoard();
+            this.cellSize = this.model.calculateBoard();
         }
 
         for (int i = 0; i < gridSize; i++) {
@@ -113,8 +113,8 @@ public class BoardPresenter implements BoardContract.Presenter {
 //        menghitung dalam sebuah rectangle ada berapa sel, bila sel<1 jangan buat rectangle
         int length= rightCheck-leftCheck;
         int width= bottomCheck-topCheck;
-        length/=hm.get("cellSize");
-        width/=hm.get("cellSize");
+        length/=this.cellSize;
+        width/=this.cellSize;
 
         length*= width;
 
@@ -190,17 +190,17 @@ public class BoardPresenter implements BoardContract.Presenter {
     //menkonversikan kembali kebentuk koordinat untuk memudahkan penggambaran
     private int toCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
         if(isStart){
-            return hm.get("offsetX") + add + Math.min(startCol, endCol) * hm.get("cellSize");
+            return add + Math.min(startCol, endCol) * this.cellSize;
         }else{
-            return hm.get("offsetX") - add + (Math.max(startCol, endCol) + 1) * hm.get("cellSize");
+            return add*-1 + (Math.max(startCol, endCol) + 1) * this.cellSize;
         }
     }
 
     private int toCoordinateRow(boolean isStart, int add, int startRow, int endRow) {
         if(isStart){
-            return hm.get("offsetY") + add + Math.min(startRow, endRow) * hm.get("cellSize");
+            return add + Math.min(startRow, endRow) * this.cellSize;
         }else{
-            return hm.get("offsetY") - add + (Math.max(startRow, endRow) + 1) * hm.get("cellSize");
+            return add*-1 + (Math.max(startRow, endRow) + 1) * this.cellSize;
         }
     }
 
