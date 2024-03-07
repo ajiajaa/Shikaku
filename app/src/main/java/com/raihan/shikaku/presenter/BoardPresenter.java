@@ -154,20 +154,15 @@ public class BoardPresenter implements BoardContract.Presenter {
     }
 
     //mengecek apakah persegi yang akan dibuat bertumpang tindih dengan persegi yang sudah ada
-    private boolean isRectangleOverlapping(int startRow1, int startCol1, int endRow1, int endCol1,
+    private boolean isRectangleOverlapping(int left, int top, int right, int bottom,
                                            Rectangle rect2) {
-        int left1 = Math.min(startRow1, endRow1);
-        int top1 = Math.min(startCol1, endCol1);
-        int right1 = Math.max(startRow1, endRow1);
-        int bottom1 = Math.max(startCol1, endCol1);
-
-        int left2 = rect2.getLeft();
-        int top2 = rect2.getTop();
-        int right2 = rect2.getRight();
-        int bottom2 = rect2.getBottom();
+        int left1 = rect2.getLeft();
+        int top1 = rect2.getTop();
+        int right1 = rect2.getRight();
+        int bottom1 = rect2.getBottom();
 
         // Pengecekan tumpang tindih
-        return left1 <= right2 && right1 >= left2 && top1 <= bottom2 && bottom1 >= top2;
+        return left <= right1 && right >= left1 && top <= bottom1 && bottom >= top1;
     }
 
 
