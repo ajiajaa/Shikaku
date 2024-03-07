@@ -73,21 +73,20 @@ public class BoardPresenter implements BoardContract.Presenter {
 
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-//                  agar grid berada ditengah image view
-                int left = toCoordinateCol(true, 0, j, Integer.MAX_VALUE);
-                int top = toCoordinateRow(true, 0, i, Integer.MAX_VALUE);
-                int right = toCoordinateCol(false, 0, j, Integer.MIN_VALUE);
-                int bottom = toCoordinateRow(false, 0, i, Integer.MIN_VALUE);
+                int left = toCoordinate(true, 0, j, Integer.MAX_VALUE);
+                int top = toCoordinate(true, 0, i, Integer.MAX_VALUE);
+                int right = toCoordinate(false, 0, j, Integer.MIN_VALUE);
+                int bottom = toCoordinate(false, 0, i, Integer.MIN_VALUE);
 
                 this.view.drawBoard(left, top, right, bottom);
             }
         }
         ArrayList<Angka> angkaList= lvl.getCellNumbers();
         for (int i = 0; i < angkaList.size(); i++){
-            int left = toCoordinateCol(true, 0, angkaList.get(i).getColumn(), Integer.MAX_VALUE);
-            int top = toCoordinateRow(true, 0, angkaList.get(i).getRow(), Integer.MAX_VALUE);
-            int right = toCoordinateCol(false, 0, angkaList.get(i).getColumn(), Integer.MIN_VALUE);
-            int bottom = toCoordinateRow(false, 0, angkaList.get(i).getRow(), Integer.MIN_VALUE);
+            int left = toCoordinate(true, 0, angkaList.get(i).getColumn(), Integer.MAX_VALUE);
+            int top = toCoordinate(true, 0, angkaList.get(i).getRow(), Integer.MAX_VALUE);
+            int right = toCoordinate(false, 0, angkaList.get(i).getColumn(), Integer.MIN_VALUE);
+            int bottom = toCoordinate(false, 0, angkaList.get(i).getRow(), Integer.MIN_VALUE);
 
             this.view.drawNumbers(angkaList.get(i).getValue(), left, top, right, bottom);
         }
@@ -100,15 +99,15 @@ public class BoardPresenter implements BoardContract.Presenter {
         int endRow =  Math.max(hm1.get("startRow"), hm1.get("endRow"));
         int endCol =  Math.max(hm1.get("startCol"), hm1.get("endCol"));
         Log.d("TAG", "onProcessSelectedCell: "+startRow+", "+startCol);
-        int left = toCoordinateCol(true, 10, startCol, endCol);
-        int top = toCoordinateRow(true, 10, startRow, endRow);
-        int right = toCoordinateCol(false, 10, startCol, endCol);
-        int bottom = toCoordinateRow(false, 10, startRow, endRow);
+        int left = toCoordinate(true, 10, startCol, endCol);
+        int top = toCoordinate(true, 10, startRow, endRow);
+        int right = toCoordinate(false, 10, startCol, endCol);
+        int bottom = toCoordinate(false, 10, startRow, endRow);
 
-        int leftCheck = toCoordinateCol(true, 0, startRow, endRow);
-        int topCheck = toCoordinateRow(true, 0, startCol, endCol);
-        int rightCheck = toCoordinateCol(false, 0, startRow, endRow);
-        int bottomCheck = toCoordinateRow(false, 0, startCol, endCol);
+        int leftCheck = toCoordinate(true, 0, startRow, endRow);
+        int topCheck = toCoordinate(true, 0, startCol, endCol);
+        int rightCheck = toCoordinate(false, 0, startRow, endRow);
+        int bottomCheck = toCoordinate(false, 0, startCol, endCol);
 
 //        menghitung dalam sebuah rectangle ada berapa sel, bila sel<1 jangan buat rectangle
         int length= rightCheck-leftCheck;
@@ -183,19 +182,11 @@ public class BoardPresenter implements BoardContract.Presenter {
     }
 
     //menkonversikan kembali kebentuk koordinat untuk memudahkan penggambaran
-    private int toCoordinateCol(boolean isStart, int add, int startCol, int endCol) {
+    private int toCoordinate(boolean isStart, int add, int start, int end) {
         if(isStart){
-            return add + Math.min(startCol, endCol) * this.cellSize;
+            return add + Math.min(start, end) * this.cellSize;
         }else{
-            return add*-1 + (Math.max(startCol, endCol) + 1) * this.cellSize;
-        }
-    }
-
-    private int toCoordinateRow(boolean isStart, int add, int startRow, int endRow) {
-        if(isStart){
-            return add + Math.min(startRow, endRow) * this.cellSize;
-        }else{
-            return add*-1 + (Math.max(startRow, endRow) + 1) * this.cellSize;
+            return add*-1 + (Math.max(start, end) + 1) * this.cellSize;
         }
     }
 

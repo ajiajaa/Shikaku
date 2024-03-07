@@ -384,7 +384,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         if (vibrator != null) {
             // cek versi Android
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK));
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK));
             } else {
                 // sebelum Android Oreo / 8.0
                 vibrator.vibrate(50);
