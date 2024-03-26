@@ -335,7 +335,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     }
 
     @Override
-    public void setSelectedCell(List<Rectangle> rectList) {
+    public void setSelectedCell(ArrayList<Rectangle> rectList) {
         this.rectList= rectList;
         drawSelectedcell();
     }
@@ -397,7 +397,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         binding.ivCanvas.setScaleX(newScale);
         binding.ivCanvas.setScaleY(newScale);
     }
-    public void showDialog(Boolean isPause){
+    public void showDialog(boolean isPause){
         if(isPause){
             this.isPause = isPause;
         }

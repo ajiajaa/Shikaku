@@ -14,7 +14,7 @@ public interface BoardContract {
     interface View {
         void drawBoard(int left, int top, int right, int bottom);
         void drawNumbers(int angka, int left, int top, int right, int bottom);
-        void setSelectedCell(List<Rectangle> rectList);
+        void setSelectedCell(ArrayList<Rectangle> rectList);
         void drawOnMoveSelectedCell(int left, int top, int right, int bottom);
         void cellCounter(int ctr);
         void overlapChecker(boolean isOverlap);
