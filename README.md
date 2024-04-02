@@ -23,7 +23,7 @@ Task list :
 12. Tutorial (Done! 26/02/2024)
 
 Beta test is OPEN NOW :
-[Releases : Download](https://github.com/ajiajaa/Shikaku/releases/tag/Download)
+[Releases: Download](https://github.com/ajiajaa/Shikaku/releases/tag/v0.1.0-beta)
 
 Available levels :
 - Easy (5x5) : 50 levels
