@@ -31,8 +31,10 @@ Available levels :
 - Hard (15x15) : 50 levels
 
 Tested :
+- Android 14 (Poco F3) : safe
 - Android 13 (Poco F3) : safe
-- Android 13 (Pixel 2) : safe
+- Android 14 (Pixel 7) : safe
+- Android 13 (Pixel 2-emulator) : safe
 - Android 10 (Redmi Note 7) : safe
-- Android 7.0 (Pixel) : safe
+- Android 7.0 (Pixel 2-emulator) : safe
 - Android 7.1.2 (Emulator LD Player 4): bug
