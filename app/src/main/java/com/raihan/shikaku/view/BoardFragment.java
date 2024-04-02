@@ -1,8 +1,10 @@
 package com.raihan.shikaku.view;
 
+import android.content.DialogInterface;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -14,7 +16,12 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
@@ -55,6 +62,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
     private int tutorialLevel;
     private int tutorialCount;
+    private Animation slideinAnimation;
+    private Animation slideoutAnimation;
+    private Handler mHandler;
 
     public static BoardFragment newInstance(String title){
         BoardFragment fragment = new BoardFragment();
@@ -68,11 +78,26 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         tutorialCount=1;
         tutorialLevel=1;
 
+        slideinAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
+        slideoutAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        if(isTutorial()){
+            binding.chara.setAnimation(slideinAnimation);
+            binding.tvTutor.setAnimation(slideinAnimation);
+        }
         this.presenter= new BoardPresenter(this);
         this.binding.ivCanvas.setOnTouchListener(this);
         vibrator = (Vibrator) requireContext().getSystemService(getContext().VIBRATOR_SERVICE);
         zoomSeekBar = binding.zoomSeekBar;
         firstOpen = true;
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                stopHandler();
+                getParentFragmentManager().popBackStack();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
         if(isTutorial()){
             binding.btnReset.setVisibility(View.GONE);
@@ -261,6 +286,15 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     //untuk memberikan hint kepada pengguna ketika ada persegi yang menyalahi aturan
     @Override
     public void getWrongRect(ArrayList<Rectangle> wrongRect) {
+        vibrate1();
+        if(!isTutorial()){
+            binding.chara.setVisibility(View.VISIBLE);
+            binding.chara.startAnimation(slideinAnimation);
+            binding.tvTutor.setVisibility(View.VISIBLE);
+            binding.tvTutor.setText("Oops, that's wrong!");
+            binding.tvTutor.startAnimation(slideinAnimation);
+            startHandler();
+        }
         for(int i= 0; i< wrongRect.size(); i++){
             int left= wrongRect.get(i).getLeft();
             int top= wrongRect.get(i).getTop();
@@ -268,6 +302,28 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             int bottom= wrongRect.get(i).getBottom();
 
             binding.ivCanvas.drawSelectedCell(true, left, top, right, bottom);
+        }
+    }
+
+    private void startHandler() {
+       mHandler = new Handler();
+       mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Sembunyikan ImageView setelah satu detik
+                if(!isTutorial()){
+                    binding.chara.setVisibility(View.GONE);
+                    binding.chara.startAnimation(slideoutAnimation);
+                    binding.tvTutor.setVisibility(View.GONE);
+                    binding.tvTutor.startAnimation(slideoutAnimation);
+                }
+            }
+        }, 1500);
+    }
+    private void stopHandler() {
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
         }
     }
 
@@ -385,6 +441,18 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             // cek versi Android
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK));
+            } else {
+                // sebelum Android Oreo / 8.0
+                vibrator.vibrate(50);
+            }
+        }
+    }
+    public void vibrate1() {
+        if (vibrator != null) {
+            // cek versi Android
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                VibrationEffect vibrationEffect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
+                vibrator.vibrate(vibrationEffect);
             } else {
                 // sebelum Android Oreo / 8.0
                 vibrator.vibrate(50);

@@ -12,6 +12,7 @@ public class LevelPresenter implements LevelContract.Presenter{
     private final Level model;
     private LevelContract.View view;
 
+
     public LevelPresenter(LevelContract.View view, Context context) {
         this.view = view;
         this.model = new Level(context);

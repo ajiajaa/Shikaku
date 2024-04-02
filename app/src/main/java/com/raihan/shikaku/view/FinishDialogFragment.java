@@ -53,6 +53,9 @@ public class FinishDialogFragment extends DialogFragment implements View.OnClick
             this.binding.btnPlay.setVisibility(View.GONE);
             this.binding.pause.setVisibility(View.GONE);
         }
+        if(level==50){
+            this.binding.nextBtn.setVisibility(View.GONE);
+        }
         Log.d("TAG", "waktu: "+waktu);
         switch (gridSize){
             case 5: if(waktu>4 && waktu<=10){

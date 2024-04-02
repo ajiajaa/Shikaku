@@ -15,16 +15,22 @@
         android:id="@+id/pagenamelevel"
         android:text="Levels">
     </TextView>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height= "650dp"
+        android:layout_height="650dp"
         android:layout_below="@id/pagenamelevel"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:layoutManager="LinearLayoutManager"
         android:background="@drawable/border"
-        tools:listitem="@layout/fragment_level" />
+        android:padding="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height= "match_parent"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/fragment_level" />
+    </LinearLayout>
+
     <View
         android:layout_width="109dp"
         android:layout_height="28dp"

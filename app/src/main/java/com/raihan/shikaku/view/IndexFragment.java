@@ -1,6 +1,8 @@
 package com.raihan.shikaku.view;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +62,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         this.binding.music.setOnClickListener(this);
         this.binding.nomusic.setOnClickListener(this);
         this.binding.how.setOnClickListener(this);
+        this.binding.bug.setOnClickListener(this);
 
         return view;
     }
@@ -83,6 +86,12 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
             CreditDialogFragment cdf = new CreditDialogFragment();
             FragmentTransaction ft = getParentFragmentManager().beginTransaction();
             cdf.show(ft,"a");
+        }
+        if(this.binding.bug== v){
+            String url = "https://dpougqu6ock.typeform.com/to/XnjDEEnc";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
         }
     }
 

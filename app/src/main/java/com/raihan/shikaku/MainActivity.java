@@ -74,10 +74,12 @@ public class MainActivity extends AppCompatActivity{
     }
     public void changePage(int page) {
         FragmentTransaction ft = this.fragmentManager.beginTransaction();
-
+//        ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
         if (page == 0) {
+            ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             ft.replace(R.id.fragment_container, this.ifg);
         } else if (page == 1) {
+            ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             ft.replace(R.id.fragment_container, this.ifg).addToBackStack(null);
         }else if (page == 2) {
             ft.replace(R.id.fragment_container, this.df).addToBackStack(null);

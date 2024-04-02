@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:id="@+id/btnContainer"
         android:layout_below="@id/play">
         <Button
             android:layout_width="80dp"
@@ -45,6 +46,13 @@
             android:background="@drawable/button_rules"
             android:layout_below="@id/music"/>
     </LinearLayout>
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/bug"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_bug"
+        android:layout_below="@id/btnContainer"/>
     <View
         android:layout_width="109dp"
         android:layout_height="28dp"
