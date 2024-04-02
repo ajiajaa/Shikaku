@@ -22,12 +22,13 @@ Task list :
 11. Credits page (Done! 11/02/2024)
 12. Tutorial (Done! 26/02/2024)
 
-Bugs : Zoom and pan (not visible so far)
+Beta test is OPEN NOW :
+[Releases : Download](https://github.com/ajiajaa/Shikaku/releases/tag/Download)
 
 Available levels :
-- Easy (5x5) : 15 levels
-- Medium (5x5) : 15 levels
-- Hard (15x15) : 1 levels
+- Easy (5x5) : 50 levels
+- Medium (5x5) : 50 levels
+- Hard (15x15) : 50 levels
 
 Tested :
 - Android 13 (Poco F3) : safe
