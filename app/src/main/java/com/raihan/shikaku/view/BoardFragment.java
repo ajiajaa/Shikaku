@@ -27,6 +27,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.raihan.shikaku.MainActivity;
 import com.raihan.shikaku.R;
 import com.raihan.shikaku.databinding.FragmentBoardBinding;
@@ -54,7 +56,6 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
     private Vibrator vibrator;
     private SeekBar zoomSeekBar;
-
     private boolean firstOpen;
     private boolean isFinish;
     private boolean isPause;
@@ -65,6 +66,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     private Animation slideinAnimation;
     private Animation slideoutAnimation;
     private Handler mHandler;
+
+    private boolean tapTarget;
 
     public static BoardFragment newInstance(String title){
         BoardFragment fragment = new BoardFragment();
@@ -84,20 +87,24 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             binding.chara.setAnimation(slideinAnimation);
             binding.tvTutor.setAnimation(slideinAnimation);
         }
+
         this.presenter= new BoardPresenter(this);
         this.binding.ivCanvas.setOnTouchListener(this);
         vibrator = (Vibrator) requireContext().getSystemService(getContext().VIBRATOR_SERVICE);
         zoomSeekBar = binding.zoomSeekBar;
         firstOpen = true;
+        tapTarget = false;
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                stopHandler();
-                getParentFragmentManager().popBackStack();
+                if(!tapTarget){
+                    stopHandler();
+                    getParentFragmentManager().popBackStack();
+                }
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         if(isTutorial()){
             binding.btnReset.setVisibility(View.GONE);
@@ -157,9 +164,16 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
                     seconds= 0;
                     binding.time.setText("0:00");
-                    presenter.startStopwatch();
+                    if(!isTutorial() && level==1 && gridSize==5){
+                        tapTarget();
+
+                    }else {
+                        presenter.startStopwatch();
+
+                    }
                     isFinish = false;
                     isPause = false;
+
                 }
             });
         }else{
@@ -173,6 +187,35 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         this.binding.pan1.setOnClickListener(this);
 
         return view;
+    }
+
+    private void tapTarget() {
+        tapTarget = true;
+        new TapTargetSequence(getActivity())
+                .targets(
+                        TapTarget.forView(binding.count, "Counter", "This element will help you to know the size of the rectangle that you are creating."),
+                        TapTarget.forView(binding.btnReset, "Reset", "When things get messed up, don't worry! this button always allows you to get a fresh start."),
+                        TapTarget.forView(binding.level, "How to get a hint?", "You may get a hint if you're feeling stuck by filling the board with rectangles."))
+                .listener(new TapTargetSequence.Listener() {
+                    // This listener will tell us when interesting(tm) events happen in regards
+                    // to the sequence
+                    @Override
+                    public void onSequenceFinish() {
+                        // Yay
+                        presenter.startStopwatch();
+                        tapTarget = false;
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        // Perform action for the current target
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        // Boo
+                    }
+                }).continueOnCancel(true).start();
     }
 
     private boolean isTutorial() {
