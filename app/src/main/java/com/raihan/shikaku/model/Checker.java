@@ -35,7 +35,9 @@ public class Checker {
         if(correctRect.size()!=angkaList.size()) {
             Log.d("Output", "Pemetaan tidak bijection");
             wrongRect.removeAll(correctRect);
-            presenter.sendWrongRect(wrongRect);
+            if(presenter!=null){
+                presenter.sendWrongRect(wrongRect);
+            }
             return false;
         }
         Log.d("Output", "Pemetaan bijection");

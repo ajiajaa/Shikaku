@@ -69,6 +69,7 @@ public class BoardPresenter implements BoardContract.Presenter {
     public void onProcessDrawingBoard(boolean isReset) {
         if(!isReset){
             this.cellSize = this.model.calculateBoard();
+            Log.d("TAG", "cellsize: "+cellSize);
         }
 
         for (int i = 0; i < gridSize; i++) {

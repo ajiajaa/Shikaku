@@ -54,6 +54,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/bug"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:background="@drawable/button_bug"
             android:layout_below="@id/btnContainer"/>

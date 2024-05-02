@@ -44,9 +44,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     protected BoardPresenter presenter;
 
     private PointF start;
-    private List<Rectangle> rectList;
+    private ArrayList<Rectangle> rectList;
 
-    private boolean isOverlap= false;
+    private boolean isOverlap;
 
     private int gridSize;
     private int level;
@@ -80,6 +80,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         View view = this.binding.getRoot();
         tutorialCount=1;
         tutorialLevel=1;
+        isOverlap= false;
 
         slideinAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
         slideoutAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
