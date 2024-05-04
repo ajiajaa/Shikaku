@@ -67,7 +67,6 @@ public class Level implements LevelContract.Model {
                 }
             }
         }
-        this.sc.close();
     }
 
     public ArrayList<Angka> getCellNumbers() {

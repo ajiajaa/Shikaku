@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -68,16 +69,54 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     private Handler mHandler;
 
     private boolean tapTarget;
+    private boolean isTerminated;
+    private long elapsedTime;
+    private String time;
 
     public static BoardFragment newInstance(String title){
         BoardFragment fragment = new BoardFragment();
 
         return fragment;
     }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("gridSize1", gridSize);
+        outState.putInt("level1", level);
+        outState.putParcelableArrayList("rect", rectList);
+        outState.putLong("elapsed", elapsedTime);
+        outState.putBoolean("firstOpen", firstOpen);
+        outState.putBoolean("isFinish", isFinish);
+        outState.putBoolean("isPause", isPause);
+        outState.putString("time", time);
+        outState.putInt("seconds", seconds);
+        Log.d("TAG", "putInstaceGRIDSIZE: "+gridSize);
+    }
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.binding = FragmentBoardBinding.inflate(inflater,container,false);
         View view = this.binding.getRoot();
+        if (savedInstanceState != null) {
+            gridSize= savedInstanceState.getInt("gridSize1");
+            level= savedInstanceState.getInt("level1");
+            rectList= savedInstanceState.getParcelableArrayList("rect");
+            elapsedTime= savedInstanceState.getLong("elapsed");
+            firstOpen= savedInstanceState.getBoolean("firstOpen");
+            isFinish= savedInstanceState.getBoolean("isFinish");
+            isPause= savedInstanceState.getBoolean("isPause");
+            time= savedInstanceState.getString("time");
+            seconds= savedInstanceState.getInt("seconds");
+            Bundle result = new Bundle();
+            result.putInt("GridSize", gridSize);
+            result.putInt("level", level);
+            isTerminated= true;
+            Log.d("TAG", "savedInstance CALLED!");
+            getParentFragmentManager().setFragmentResult("postKey", result);
+            Log.d("TAG", "getInstaceGRIDSIZE: "+gridSize);
+        }
         tutorialCount=1;
         tutorialLevel=1;
         isOverlap= false;
@@ -88,12 +127,11 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             binding.chara.setAnimation(slideinAnimation);
             binding.tvTutor.setAnimation(slideinAnimation);
         }
-
         this.presenter= new BoardPresenter(this);
+        Log.d("TAG", "onCreate CALLED!");
         this.binding.ivCanvas.setOnTouchListener(this);
         vibrator = (Vibrator) requireContext().getSystemService(getContext().VIBRATOR_SERVICE);
         zoomSeekBar = binding.zoomSeekBar;
-        firstOpen = true;
         tapTarget = false;
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -140,6 +178,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
             }
         });
+
         if(!isTutorial()){
             getParentFragmentManager().setFragmentResultListener("postKey", this, new FragmentResultListener() {
                 @Override
@@ -147,34 +186,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                     // We use a String here, but any type that can be put in a Bundle is supported.
                     gridSize = bundle.getInt("GridSize");
                     level = bundle.getInt("level");
-                    binding.ivCanvas.setGridSize(gridSize);
-                    binding.level.setText("Level "+level);
-                    Log.d("TAG", "onFragmentResult: "+gridSize);
-                    presenter.sendGridSize(getContext(), gridSize, level);
-                    if(gridSize==5){
-                        binding.zoomSeekBar.setVisibility(View.GONE);
-                        binding.pan.setVisibility(View.GONE);
-                    }
+                    Log.d("TAG", "getPFM CALLED!");
 
-                    // untuk case saat menekan next level di dialog finish.
-                    updateZoom(1.0f);
-                    zoomSeekBar.setProgress(0);
-                    rectList= null;
-                    presenter.newRectList();
-                    initCanvas();
-
-                    seconds= 0;
-                    binding.time.setText("0:00");
-                    if(!isTutorial() && level==1 && gridSize==5){
-                        tapTarget();
-
-                    }else {
-                        presenter.startStopwatch();
-
-                    }
-                    isFinish = false;
-                    isPause = false;
-
+                    initFragment();
                 }
             });
         }else{
@@ -188,6 +202,46 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         this.binding.pan1.setOnClickListener(this);
 
         return view;
+    }
+
+    private void initFragment() {
+        binding.ivCanvas.setGridSize(gridSize);
+        binding.level.setText("Level "+level);
+        Log.d("TAG", "onFragmentResult: "+gridSize);
+        presenter.sendGridSize(getContext(), gridSize, level);
+        if(gridSize==5){
+            binding.zoomSeekBar.setVisibility(View.GONE);
+            binding.pan.setVisibility(View.GONE);
+        }
+
+        // untuk case saat menekan next level di dialog finish.
+
+        updateZoom(1.0f);
+        zoomSeekBar.setProgress(0);
+        if(!isTerminated){
+            rectList= null;
+            presenter.newRectList();
+            seconds= 0;
+            binding.time.setText("0:00");
+            firstOpen = true;
+            isFinish = false;
+            isPause = false;
+            if(!isTutorial() && level==1 && gridSize==5){
+                tapTarget();
+            }else {
+                presenter.startStopwatch();
+            }
+        }else{
+            if(rectList==null){
+                rectList= new ArrayList<>();
+            }
+            presenter.setRectList(rectList);
+            presenter.terminatedElapsed(elapsedTime);
+            binding.time.setText(time);
+            isTerminated= false;
+        }
+        initCanvas();
+
     }
 
     private void tapTarget() {
@@ -407,11 +461,17 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     @Override
     public void sendStopwatch(String time) {
         this.binding.time.setText(time);
+        this.time= time;
     }
 
     @Override
     public void getSecond(int seconds) {
         this.seconds= seconds;
+    }
+
+    @Override
+    public void getElapsedTime(long elapsedTime) {
+        this.elapsedTime=elapsedTime;
     }
 
     @Override
@@ -464,21 +524,23 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     @Override
     public void onPause() {
         super.onPause();
+        if(fdf!=null && fdf.isVisible())
+            fdf.dismiss();
+        notPause();
+        this.firstOpen= false;
         presenter.pauseStopwatch();
     }
     @Override
     public void onResume(){
         super.onResume();
+        Log.d("TAG", "onResume: "+firstOpen+", "+isFinish+", "+isPause);
         if(!isTutorial()){
             if(!firstOpen && !isFinish && !isPause){
                 showDialog(true);
-            }else{
-                this.firstOpen = false;
-                zoomSeekBar.setProgress(0);
-                updateZoom(1.0f);
+            }else if(!firstOpen && isFinish){
+                showDialog(false);
             }
         }
-
     }
     public void vibrate() {
         if (vibrator != null) {
@@ -513,6 +575,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         if(isPause){
             this.isPause = isPause;
         }
+        Log.d("TAG", "seconds: "+seconds);
         this.fdf= fdf.newInstance(this.presenter,this.gridSize, this.level, this.seconds, this.binding.time.getText().toString(), isPause);
         FragmentTransaction ft = getParentFragmentManager().beginTransaction();
         fdf.show(ft,"a");
@@ -522,7 +585,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     @Override
     public void onClick(View view) {
         if(view == binding.btnPause){
-            presenter.stopStopwatch();
+            presenter.pauseStopwatch();
             showDialog(true);
         }
         if(view == binding.pan){

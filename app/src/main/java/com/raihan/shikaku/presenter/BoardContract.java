@@ -22,6 +22,7 @@ public interface BoardContract {
         void checkerResult(boolean isValid);
         void sendStopwatch(String time);
         void getSecond(int seconds);
+        void getElapsedTime(long elapsedTime);
         void vibrating();
         void notPause();
 
@@ -36,11 +37,13 @@ public interface BoardContract {
         void sendWidth(int width);
         void sendHeight(int height);
         void newRectList();
+        void setRectList(ArrayList<Rectangle> rectList);
         void startStopwatch();
         void stopStopwatch();
         void resumeStopwatch();
         void pauseStopwatch();
         void checker();
+        void terminatedElapsed(long elapsedTime);
     }
 
     interface Model {

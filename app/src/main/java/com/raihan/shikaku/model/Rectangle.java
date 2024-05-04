@@ -1,6 +1,9 @@
 package com.raihan.shikaku.model;
 
-public class Rectangle {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Rectangle implements Parcelable {
     //+10 untuk tampilan
     private int left;//left || start x
     private int top;//top || start y
@@ -68,5 +71,47 @@ public class Rectangle {
 
     public int getEndCol() {
         return endCol;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(left);
+        dest.writeInt(top);
+        dest.writeInt(right);
+        dest.writeInt(bottom);
+        dest.writeInt(totalCell);
+        dest.writeInt(startRow);
+        dest.writeInt(startCol);
+        dest.writeInt(endRow);
+        dest.writeInt(endCol);
+    }
+
+    public static final Parcelable.Creator<Rectangle> CREATOR = new Parcelable.Creator<Rectangle>() {
+        @Override
+        public Rectangle createFromParcel(Parcel in) {
+            return new Rectangle(in);
+        }
+
+        @Override
+        public Rectangle[] newArray(int size) {
+            return new Rectangle[size];
+        }
+    };
+
+    private Rectangle(Parcel in) {
+        left = in.readInt();
+        top = in.readInt();
+        right = in.readInt();
+        bottom = in.readInt();
+        totalCell = in.readInt();
+        startRow = in.readInt();
+        startCol = in.readInt();
+        endRow = in.readInt();
+        endCol = in.readInt();
     }
 }

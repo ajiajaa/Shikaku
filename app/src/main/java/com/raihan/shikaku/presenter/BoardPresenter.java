@@ -182,6 +182,11 @@ public class BoardPresenter implements BoardContract.Presenter {
         this.rectList= new ArrayList<>();
     }
 
+    @Override
+    public void setRectList(ArrayList<Rectangle> rectList) {
+        this.rectList = rectList;
+    }
+
     //menkonversikan kembali kebentuk koordinat untuk memudahkan penggambaran
     private int toCoordinate(boolean isStart, int add, int start, int end) {
         if(isStart){
@@ -190,7 +195,6 @@ public class BoardPresenter implements BoardContract.Presenter {
             return add*-1 + (Math.max(start, end) + 1) * this.cellSize;
         }
     }
-
     @Override
     public void checker() {
         //Check apakah sudah menyelesaikan papan, jika sudah check jawaban
@@ -202,6 +206,12 @@ public class BoardPresenter implements BoardContract.Presenter {
         if(totalRecCell==Math.pow(gridSize,2)){
             view.checkerResult(checker.validateBoard());
         }
+    }
+
+    @Override
+    public void terminatedElapsed(long elapsedTime) {
+        isStopwatchRunning= false;
+        this.elapsedTime=elapsedTime;
     }
 
     //timer thingy
@@ -269,6 +279,7 @@ public class BoardPresenter implements BoardContract.Presenter {
 
         // Format waktu dan setel ke TextView
         this.formattedTime = String.format("%d:%02d", minutes, seconds);
+        view.getElapsedTime(elapsedTime);
         view.sendStopwatch(this.formattedTime);
     }
     private void calculateScore() {

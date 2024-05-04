@@ -141,6 +141,33 @@ public class CheckerTest {
     }
     @Test
     public void testTrueDiff10Lev10() {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Level level= new Level(context, 10);
+        level.readPuzzles(9);
+
+        ArrayList<Rectangle> arrayList= new ArrayList<>();
+
+        arrayList.add(createRectangle(0,0,1,1,4));
+        arrayList.add(createRectangle(0,2,0,5,4));
+        arrayList.add(createRectangle(1,2,1,5,4));
+        arrayList.add(createRectangle(0,6,1,7,4));
+        arrayList.add(createRectangle(0,8,4,8,5));
+        arrayList.add(createRectangle(0,9,4,9,5));
+        arrayList.add(createRectangle(2,0,3,7,16));
+        arrayList.add(createRectangle(4,0, 6,0,3));
+        arrayList.add(createRectangle(4,1,4,7,7));
+        arrayList.add(createRectangle(5,1,5,2,2));
+        arrayList.add(createRectangle(6,1,6,2,2));
+        arrayList.add(createRectangle(5,3,9,5,15));
+        arrayList.add(createRectangle(5,6,5,9,4));
+        arrayList.add(createRectangle(6,6,9,6,4));
+        arrayList.add(createRectangle(6,7,6,9,3));
+        arrayList.add(createRectangle(7,7,9,9,9));
+        arrayList.add(createRectangle(7,0,9,2,9));
+
+        Checker checker = new Checker(null, arrayList, level);
+        boolean isValid = checker.validateBoard();
+        assertTrue(isValid);
     }
     @Test
     public void testFalseDiff10Lev10() {
@@ -150,6 +177,58 @@ public class CheckerTest {
     //15x15
     @Test
     public void testTrueDiff15Lev1() {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Level level= new Level(context, 10);
+        level.readPuzzles(9);
+
+        ArrayList<Rectangle> arrayList= new ArrayList<>();
+
+        arrayList.add(createRectangle(0,0,0,1,2));
+        arrayList.add(createRectangle(0,2,0,4,3));
+        arrayList.add(createRectangle(0,5,1,9,10));
+        arrayList.add(createRectangle(0,10,1,10,2));
+        arrayList.add(createRectangle(0,11,1,13,6));
+        arrayList.add(createRectangle(0,14,1,14,2));
+        arrayList.add(createRectangle(1,0,2,0,2));
+        arrayList.add(createRectangle(1,1,5,4,20));
+        arrayList.add(createRectangle(2,5,5,10,24));
+        arrayList.add(createRectangle(2,11,3,11,2));
+        arrayList.add(createRectangle(2,12,5,12,4));
+        arrayList.add(createRectangle(2,13,2,14,2));
+        arrayList.add(createRectangle(3,0,5,0,3));
+        arrayList.add(createRectangle(4,11,5,11,2));
+        arrayList.add(createRectangle(3,13,3,9,7));
+        arrayList.add(createRectangle(3,14,4,14,2));
+        arrayList.add(createRectangle(5,14,12,14,8));
+        arrayList.add(createRectangle(6,0,6,3,4));
+        arrayList.add(createRectangle(6,4,6,10,7));
+        arrayList.add(createRectangle(6,11,6,12,2));
+        arrayList.add(createRectangle(7,0,7,3,4));
+        arrayList.add(createRectangle(7,4,8,8,10));
+        arrayList.add(createRectangle(7,9,9,12,12));
+        arrayList.add(createRectangle(8,0,8,3,4));
+        arrayList.add(createRectangle(9,0,10,0,2));
+        arrayList.add(createRectangle(9,1,13,2,10));
+        arrayList.add(createRectangle(9,3,11,3,3));
+        arrayList.add(createRectangle(9,4,10,7,8));
+        arrayList.add(createRectangle(9,8,10,8,2));
+        arrayList.add(createRectangle(10,9,10,13,5));
+        arrayList.add(createRectangle(11,0,13,0,3));
+        arrayList.add(createRectangle(11,4,11,5,2));
+        arrayList.add(createRectangle(11,6,11,8,3));
+        arrayList.add(createRectangle(11,9,11,11,3));
+        arrayList.add(createRectangle(11,12,13,12,3));
+        arrayList.add(createRectangle(11,13,12,13,2));
+        arrayList.add(createRectangle(12,3,13,10,16));
+        arrayList.add(createRectangle(12,11,13,11,2));
+        arrayList.add(createRectangle(13,13,13,14,2));
+        arrayList.add(createRectangle(14,0,14,1,2));
+        arrayList.add(createRectangle(14,2,14,10,9));
+        arrayList.add(createRectangle(14,11,14,14,4));
+
+        Checker checker = new Checker(null, arrayList, level);
+        boolean isValid = checker.validateBoard();
+        assertTrue(isValid);
     }
     @Test
     public void testFalseDiff15Lev1() {

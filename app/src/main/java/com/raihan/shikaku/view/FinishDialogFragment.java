@@ -37,11 +37,22 @@ public class FinishDialogFragment extends DialogFragment implements View.OnClick
         FinishDialogFragment.presenter= presenter;
         return fragment;
     }
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putString("waktuText", waktuText);
+//        outState.putInt("level2", level);
+//        outState.putInt("gridSize2", gridSize);
+//    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         this.binding = FragmentDialogFinishBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
         setCancelable(false);
+//        if (savedInstanceState != null) {
+//            waktuText = savedInstanceState.getString("waktuText");
+//            level = savedInstanceState.getInt("level2");
+//            gridSize = savedInstanceState.getInt("gridSize2");
+//        }
         if (isPause){
             binding.star1.setVisibility(View.GONE);
             binding.star2.setVisibility(View.GONE);
@@ -88,8 +99,6 @@ public class FinishDialogFragment extends DialogFragment implements View.OnClick
             result.putInt("GridSize", gridSize);
             result.putInt("level", level+1);
             getParentFragmentManager().setFragmentResult("postKey", result);
-            ((MainActivity)getActivity()).changePage(4);
-            getParentFragmentManager().popBackStack();
             dismiss();
         }
         if(view==binding.menuBtn){

@@ -1,5 +1,6 @@
 package com.raihan.shikaku;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,6 +17,8 @@ import com.raihan.shikaku.view.IndexFragment;
 import com.raihan.shikaku.view.DifficultyFragment;
 import com.raihan.shikaku.view.LevelFragment;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity{
 
     protected ActivityMainBinding binding;
@@ -30,11 +33,25 @@ public class MainActivity extends AppCompatActivity{
     private boolean isMusicPlaying;
     public boolean isMusicOn;
     public SharedPreferences preferences;
+    boolean displayedPage;
+    private static final String KEY_DISPLAYED_PAGE = "displayedpage";
 
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_DISPLAYED_PAGE, true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            displayedPage = savedInstanceState.getBoolean(KEY_DISPLAYED_PAGE, false);
+        }else
+            displayedPage = false;
+
         this.binding = ActivityMainBinding.inflate(this.getLayoutInflater());
         this.ifg = ifg.newInstance("Fragment Index");
         this.df = df.newInstance("Fragment Difficulty");
@@ -52,12 +69,13 @@ public class MainActivity extends AppCompatActivity{
 //      page thingy
         this.fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction ft = this.fragmentManager.beginTransaction();
-        if(preferences.getBoolean("isTutorial",true)){
-            ft.add(R.id.fragment_container, this.bf).commit();
-        }else{
-            ft.add(R.id.fragment_container, this.ifg).commit();
+        if(!displayedPage){
+            if(preferences.getBoolean("isTutorial",true)){
+                ft.add(R.id.fragment_container, this.bf).commit();
+            }else{
+                ft.add(R.id.fragment_container, this.ifg).commit();
+            }
         }
-
         setContentView(binding.getRoot());
     }
     public void musicSetting(){
