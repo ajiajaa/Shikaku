@@ -226,7 +226,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             firstOpen = true;
             isFinish = false;
             isPause = false;
-            if(!isTutorial() && level==1 && gridSize==5){
+            if(!isTutorial() && isTutorialTT()){
                 tapTarget();
             }else {
                 presenter.startStopwatch();
@@ -259,6 +259,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                         // Yay
                         presenter.startStopwatch();
                         tapTarget = false;
+                        falseTutorialTT();
                     }
 
                     @Override
@@ -275,6 +276,12 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
     private boolean isTutorial() {
         return ((MainActivity)getActivity()).preferences.getBoolean("isTutorial", true);
+    }
+    private boolean isTutorialTT() {
+        return ((MainActivity)getActivity()).preferences.getBoolean("isTutorialTT", true);
+    }
+    private void falseTutorialTT() {
+        ((MainActivity)getActivity()).preferences.edit().putBoolean("isTutorialTT", false).apply();
     }
 
     //inisiasi canvas pertama kali
@@ -404,8 +411,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     }
 
     private void startHandler() {
-       mHandler = new Handler();
-       mHandler.postDelayed(new Runnable() {
+        mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Sembunyikan ImageView setelah satu detik
