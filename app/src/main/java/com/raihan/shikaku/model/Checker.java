@@ -21,18 +21,25 @@ public class Checker {
         ArrayList<Rectangle> correctRect= new ArrayList<>();
         ArrayList<Rectangle> wrongRect= new ArrayList<>(rectList);
         for (Rectangle r : rectList) {
-            ArrayList<Angka> tempAngka= new ArrayList<>();
+            Angka tempAngka= null;
+            int angkactr= 0;
             for (Angka a : lvl.getCellNumbers()) {
                 if (a.getRow() >= r.getStartRow() && a.getRow() <= r.getEndRow()
                         && a.getColumn() >= r.getStartCol() && a.getColumn() <= r.getEndCol()) {
-                    tempAngka.add(a);
+                    tempAngka = a;
+                    angkactr++;
+                }
+                if(angkactr>1){
+                    tempAngka= null;
+                    break;
                 }
             }
-            if(tempAngka.size()==1 && tempAngka.get(0).getValue() == r.getTotalCell()){
+            if(tempAngka!= null && tempAngka.getValue() == r.getTotalCell()){
                 correctRect.add(r);
+                Log.d("TAG", "checkRect: "+tempAngka.getValue());
             }
         }
-        if(correctRect.size()!=angkaList.size()) {
+        if(correctRect.size()!=angkaList.size() || rectList.size()!=angkaList.size()) {
             Log.d("Output", "Pemetaan tidak bijection");
             wrongRect.removeAll(correctRect);
             if(presenter!=null){

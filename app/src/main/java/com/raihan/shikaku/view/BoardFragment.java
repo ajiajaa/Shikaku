@@ -250,7 +250,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                 .targets(
                         TapTarget.forView(binding.count, "Counter", "This element will help you to know the size of the rectangle that you are creating."),
                         TapTarget.forView(binding.btnReset, "Reset", "When things get messed up, don't worry! this button always allows you to get a fresh start."),
-                        TapTarget.forView(binding.level, "How to get a hint?", "You may get a hint if you're feeling stuck by filling the board with rectangles."))
+                        TapTarget.forView(binding.level, "How to get a hint?", "If you're feeling stuck, you may get a hint by filling the board with rectangles."))
                 .listener(new TapTargetSequence.Listener() {
                     // This listener will tell us when interesting(tm) events happen in regards
                     // to the sequence
@@ -363,7 +363,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                         this.isOverlap= false;
                         Log.d("TAG", "onTouch: im in overlap");
                     }
-                    presenter.checker();
+                    if(start.x != e.getX() && start.y != e.getY())
+                        presenter.checker();
                     return true;
                 case MotionEvent.ACTION_MOVE:
                     //hapus canvas

@@ -88,7 +88,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
             cdf.show(ft,"a");
         }
         if(this.binding.bug== v){
-            String url = "https://dpougqu6ock.typeform.com/to/XnjDEEnc";
+            String url = "https://forms.gle/yh6zuyVCyRMQ63FY9";
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);

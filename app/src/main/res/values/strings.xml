@@ -2,7 +2,7 @@
     <string name="app_name">Shikaku</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello, blank fragment</string>
-    <string name="tutor0">Hello, my fellow future UNPARians!\nMy name is WOVEY! I\'ll help you figure out what \'Shikaku\' is!</string>
+    <string name="tutor0">Hello! My name is WOVEY! I\'ll help you figure out what \'Shikaku\' is!</string>
     <string name="tutor1">So, Shikaku is a board game that contains many cells with numbers in them.</string>
     <string name="tutor2">Like the example below!</string>
     <string name="tutor3">For this tutorial, let\'s use a 2x2 board.</string>

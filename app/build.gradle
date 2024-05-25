@@ -10,8 +10,8 @@ android {
         applicationId "com.raihan.shikaku"
         minSdk 24
         targetSdk 34
-        versionCode 3
-        versionName "1.5-beta"
+        versionCode 4
+        versionName "2.0-Release"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
