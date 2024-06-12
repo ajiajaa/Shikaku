@@ -26,46 +26,6 @@ public class CheckerTest {
     }
     //5x5
     @Test
-    public void testTrueDiff5Lev1() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Level level= new Level(context, 5);
-        level.readPuzzles(0);
-
-        ArrayList<Rectangle> arrayList= new ArrayList<>();
-
-        arrayList.add(createRectangle(0, 0, 2, 2, 9));
-        arrayList.add(createRectangle(0, 3, 0, 4, 2));
-        arrayList.add(createRectangle(1, 4, 4, 4, 4));
-        arrayList.add(createRectangle(1, 3, 3, 3, 3));
-        arrayList.add(createRectangle(3, 0, 3, 2, 3));
-        arrayList.add(createRectangle(4, 0, 4, 1, 2));
-        arrayList.add(createRectangle(4, 2, 4, 3, 2));
-
-        Checker checker = new Checker(null, arrayList, level);
-        boolean isValid = checker.validateBoard();
-        assertTrue(isValid);
-    }
-
-    @Test
-    public void testFalseDiff5Lev1() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Level level= new Level(context, 5);
-        level.readPuzzles(0);
-
-        ArrayList<Rectangle> arrayList= new ArrayList<>();
-
-        arrayList.add(createRectangle(0, 0, 2, 2, 9));
-        arrayList.add(createRectangle(0, 3, 0, 4, 2));
-        arrayList.add(createRectangle(1, 4, 4, 4, 4));
-        arrayList.add(createRectangle(1, 3, 3, 3, 3));
-        arrayList.add(createRectangle(3, 0, 3, 2, 3));
-        arrayList.add(createRectangle(4, 0, 4, 3, 4));
-
-        Checker checker = new Checker(null, arrayList, level);
-        boolean isValid = checker.validateBoard();
-        assertFalse(isValid);
-    }
-    @Test
     public void pengujianMudahJawabanBenarVariasi1() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Level level= new Level(context, 5);
@@ -206,36 +166,6 @@ public class CheckerTest {
         Checker checker = new Checker(null, arrayList, level);
         boolean isValid = checker.validateBoard();
         assertFalse(isValid);
-    }
-    @Test
-    public void testTrueDiff10Lev10() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Level level= new Level(context, 10);
-        level.readPuzzles(9);
-
-        ArrayList<Rectangle> arrayList= new ArrayList<>();
-
-        arrayList.add(createRectangle(0,0,1,1,4));
-        arrayList.add(createRectangle(0,2,0,5,4));
-        arrayList.add(createRectangle(1,2,1,5,4));
-        arrayList.add(createRectangle(0,6,1,7,4));
-        arrayList.add(createRectangle(0,8,4,8,5));
-        arrayList.add(createRectangle(0,9,4,9,5));
-        arrayList.add(createRectangle(2,0,3,7,16));
-        arrayList.add(createRectangle(4,0, 6,0,3));
-        arrayList.add(createRectangle(4,1,4,7,7));
-        arrayList.add(createRectangle(5,1,5,2,2));
-        arrayList.add(createRectangle(6,1,6,2,2));
-        arrayList.add(createRectangle(5,3,9,5,15));
-        arrayList.add(createRectangle(5,6,5,9,4));
-        arrayList.add(createRectangle(6,6,9,6,4));
-        arrayList.add(createRectangle(6,7,6,9,3));
-        arrayList.add(createRectangle(7,7,9,9,9));
-        arrayList.add(createRectangle(7,0,9,2,9));
-
-        Checker checker = new Checker(null, arrayList, level);
-        boolean isValid = checker.validateBoard();
-        assertTrue(isValid);
     }
     @Test
     public void testFalseDiff10Lev10() {

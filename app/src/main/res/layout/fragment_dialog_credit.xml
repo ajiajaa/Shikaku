@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Muhammad Fazri Raihan PB"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textColor="?attr/colorSecondary"/>
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dr. rer. nat. Cecilia E Nugraheni"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textColor="?attr/colorSecondary"/>
         <TextView
             android:layout_width="wrap_content"
@@ -77,8 +77,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Husnul Hakim, M.T."
-            android:layout_marginLeft="20dp"
+            android:text="Husnul Hakim, M.T. \nDra. Rosa de Lima Endang Padmowati, M.T. "
+            android:layout_marginLeft="10dp"
             android:textColor="?attr/colorSecondary"/>
     </LinearLayout>
 </RelativeLayout>

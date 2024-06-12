@@ -108,17 +108,17 @@ public class LevelFragment extends Fragment implements LevelContract.View {
     @Override
     public void showItemClick(int value) {
         if(difficulty==5)
-            if(((MainActivity)getActivity()).preferences.getInt("level_easy", 1)>=value)
+            if(((MainActivity)getActivity()).preferences.getInt("level_easy", 10)>=value)
                 change(value);
             else Toast.makeText(getContext(), "Level locked!", Toast.LENGTH_SHORT).show();
 
         if(difficulty==10)
-            if(((MainActivity)getActivity()).preferences.getInt("level_medium", 1)>=value)
+            if(((MainActivity)getActivity()).preferences.getInt("level_medium", 10)>=value)
                 change(value);
             else Toast.makeText(getContext(), "Level locked!", Toast.LENGTH_SHORT).show();
 
         if(difficulty==15)
-            if(((MainActivity)getActivity()).preferences.getInt("level_hard", 1)>=value)
+            if(((MainActivity)getActivity()).preferences.getInt("level_hard", 10)>=value)
                 change(value);
             else Toast.makeText(getContext(), "Level locked!", Toast.LENGTH_SHORT).show();
 

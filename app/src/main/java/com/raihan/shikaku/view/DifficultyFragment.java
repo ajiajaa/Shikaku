@@ -44,13 +44,13 @@ public class DifficultyFragment extends Fragment implements View.OnClickListener
             result.putInt("difficulty", value);
             getParentFragmentManager().setFragmentResult("requestKey", result);
             ((MainActivity)getActivity()).changePage(3);
-        }else if(this.binding.btn10== v && ((MainActivity)getActivity()).preferences.getInt("level_easy", 1)>9){
+        }else if(this.binding.btn10== v && ((MainActivity)getActivity()).preferences.getInt("level_easy", 10)>9){
             value= 10;
             //        kirim gridsize ke fragment board
             result.putInt("difficulty", value);
             getParentFragmentManager().setFragmentResult("requestKey", result);
             ((MainActivity)getActivity()).changePage(3);
-        }else if(this.binding.btn15== v && ((MainActivity)getActivity()).preferences.getInt("level_medium", 1)>9){
+        }else if(this.binding.btn15== v && ((MainActivity)getActivity()).preferences.getInt("level_medium", 10)>9){
             value= 15;
             //        kirim gridsize ke fragment board
             result.putInt("difficulty", value);

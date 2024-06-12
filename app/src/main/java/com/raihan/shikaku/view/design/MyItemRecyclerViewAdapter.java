@@ -42,13 +42,13 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.mValue = mValues.get(position);
         holder.mIdView.setText(String.valueOf(holder.mValue));
         if(difficulty==5)
-            if(preferences.getInt("level_easy", 1)>position)
+            if(preferences.getInt("level_easy", 10)>position)
                 holder.mlock.setVisibility(View.GONE);
         if(difficulty==10)
-            if(preferences.getInt("level_medium", 1)>position)
+            if(preferences.getInt("level_medium", 10)>position)
                 holder.mlock.setVisibility(View.GONE);
         if(difficulty==15)
-            if(preferences.getInt("level_hard", 1)>position)
+            if(preferences.getInt("level_hard", 10)>position)
                 holder.mlock.setVisibility(View.GONE);
 
         Log.d("MyItemRecyclerViewAdapter", "onBindViewHolder: Position " + position);
