@@ -249,8 +249,10 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         new TapTargetSequence(getActivity())
                 .targets(
                         TapTarget.forView(binding.count, "Counter", "This element will help you to know the size of the rectangle that you are creating."),
+                        TapTarget.forView(binding.time, "Stopwatch", "This element will help you to know how long you have been playing."),
+                        TapTarget.forView(binding.btnPause, "Pause", "If you want to get a rest, I got you covered by this button."),
                         TapTarget.forView(binding.btnReset, "Reset", "When things get messed up, don't worry! this button always allows you to get a fresh start."),
-                        TapTarget.forView(binding.level, "How to get a hint?", "If you're feeling stuck, you may get a hint by filling the board with rectangles."))
+                        TapTarget.forView(binding.level, "How to identify wrong rectangles?", "If you're feeling stuck, you may get a hint by filling the board with rectangles."))
                 .listener(new TapTargetSequence.Listener() {
                     // This listener will tell us when interesting(tm) events happen in regards
                     // to the sequence
@@ -452,10 +454,10 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                 if(gridSize==5 && ((MainActivity)getActivity()).preferences.getInt("level_easy", 1)==level)
                     ((MainActivity)getActivity()).preferences.edit().putInt("level_easy", level+1).apply();
 
-                if(gridSize==10)
+                if(gridSize==10 && ((MainActivity)getActivity()).preferences.getInt("level_medium", 1)==level)
                     ((MainActivity)getActivity()).preferences.edit().putInt("level_medium", level+1).apply();
 
-                if(gridSize==15)
+                if(gridSize==15 && ((MainActivity)getActivity()).preferences.getInt("level_hard", 1)==level)
                     ((MainActivity)getActivity()).preferences.edit().putInt("level_hard", level+1).apply();
 
 
