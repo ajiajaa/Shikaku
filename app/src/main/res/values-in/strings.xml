@@ -8,8 +8,8 @@
     <string name="tutor3">Untuk tutorial ini, mari kita gunakan papan berukuran 2x2.</string>
     <string name="tutor4">Tugas kamu adalah membagi papan menjadi banyak \'persegi\'.</string>
     <string name="tutor5">Setiap persegi yang dibuat hanya berisi SATU angka.</string>
-    <string name="tutor6">Angka tersebut menunjukkan berapa banyak sel yang terdapat dalam persegi panjang tersebut.</string>
-    <string name="tutor7">Cobalah untuk membuat persegi panjang dalam puzzle ini dengan menggeser jari kamu dan selesaikanlah.</string>
+    <string name="tutor6">Angka tersebut menunjukkan berapa banyak sel yang terdapat dalam persegi tersebut.</string>
+    <string name="tutor7">Cobalah untuk membuat persegi dalam puzzle ini dengan menggeser jari kamu dan selesaikanlah.</string>
     <string name="tutor8">Bagus! Kamu bisa melakukannya!</string>
     <string name="tutor9">Sekarang, selesaikan puzzle ini!</string>
     <string name="tutor10">Kamu hebat! Sekarang kamu siap untuk menaklukkan Shikaku!</string>
@@ -26,5 +26,5 @@
     <string name="rules2">2. Luas persegi yang dibagi harus sama dengan angka yang ada di dalamnya.</string>
     <string name="rules3">3. Tidak ada area persegi yang dibagi yang tumpang tindih dengan area persegi yang dibagi lainnya.</string>
     <string name="congrats">"Selamat! kamu berhasil menaklukkan puzzle dalam"</string>
-    <string name="tutorWrong">Salah! Ingat, Setiap persegi panjang hanya berisi SATU angka dan ukuran persegi panjang sesuai dengan angka tersebut.</string>
+    <string name="tutorWrong">Salah! Ingat, Setiap persegi hanya berisi SATU angka dan ukuran persegi harus sesuai dengan angka tersebut.</string>
 </resources>
