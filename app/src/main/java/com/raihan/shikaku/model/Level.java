@@ -85,7 +85,7 @@ public class Level implements LevelContract.Model {
                 inputStream = resources.openRawResource(R.raw.puzzles10);
             } else if (difficulty == 15) {
                 inputStream = resources.openRawResource(R.raw.puzzles15);
-            }else if (difficulty == 2) {
+            }else if (difficulty == 2 || difficulty == 3) {
                 inputStream = resources.openRawResource(R.raw.tutorial);
             }
 

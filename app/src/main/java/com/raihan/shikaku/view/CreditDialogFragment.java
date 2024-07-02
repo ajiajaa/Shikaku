@@ -43,7 +43,6 @@ public class CreditDialogFragment extends DialogFragment implements View.OnClick
         }else if(binding.btnIndonesia== view){
             ((MainActivity)getActivity()).setLocale("in");
         }
-        getActivity().recreate();
         dismiss();
     }
 }

@@ -63,6 +63,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
     private boolean isPanning;
 
     private int tutorialLevel;
+    private int tutorialGrid;
     private int tutorialCount;
     private Animation slideinAnimation;
     private Animation slideoutAnimation;
@@ -121,6 +122,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         }
         tutorialCount=1;
         tutorialLevel=1;
+        tutorialGrid=2;
         isOverlap= false;
 
         slideinAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
@@ -306,7 +308,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
                             Log.d("TAG", "run: ");
                         }else{
                             binding.ivCanvas.setGridSize(2);
-                            presenter.sendGridSize(getContext(), 2, tutorialLevel);
+                            presenter.sendGridSize(getContext(), tutorialGrid, tutorialLevel);
                             presenter.newRectList();
                             rectList= null;
                         }
@@ -650,6 +652,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             if(tutorialCount == 9){
                 this.binding.tvTutor.setText(getResources().getString(R.string.tutor9));
                 tutorialLevel++;
+                tutorialGrid++;
                 initCanvas();
                 this.binding.nextBtn.setVisibility(View.GONE);
             }

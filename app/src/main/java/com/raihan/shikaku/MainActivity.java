@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("TAG", "setLocale: "+AppCompatDelegate.getApplicationLocales());
+
         preferences = this.getSharedPreferences("Shikaku", Context.MODE_PRIVATE);
 //        loadLocale();
         if (savedInstanceState != null) {
@@ -152,15 +154,7 @@ public class MainActivity extends AppCompatActivity{
     }
     public void setLocale(String lang) {
         LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(lang);
-// Call this on the main thread as it may require Activity.restart()
         AppCompatDelegate.setApplicationLocales(appLocale);
-//        preferences.edit().putString("language", lang).apply(); // Store the selected language in SharedPreferences
     }
-
-//    public void loadLocale() {
-//        Log.d("TAG", "loadLocale: "+ preferences.getString("language", "en"));
-//        Log.d("TAG", "loadLocale: "+ AppCompatDelegate.getApplicationLocales().toString());
-//        setLocale(preferences.getString("language", "en"));
-//    }
 
 }
