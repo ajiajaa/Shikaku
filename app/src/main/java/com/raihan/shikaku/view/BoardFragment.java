@@ -97,6 +97,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Log.d("TAG", "BoardFragment onCreate called");
+        getActivity().invalidateOptionsMenu();
         this.binding = FragmentBoardBinding.inflate(inflater,container,false);
         View view = this.binding.getRoot();
         if (savedInstanceState != null) {
@@ -248,11 +250,11 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         tapTarget = true;
         new TapTargetSequence(getActivity())
                 .targets(
-                        TapTarget.forView(binding.count, "Counter", "This element will help you to know the size of the rectangle that you are creating."),
-                        TapTarget.forView(binding.time, "Stopwatch", "This element will help you to know how long you have been playing."),
-                        TapTarget.forView(binding.btnPause, "Pause", "If you want to get a rest, I got you covered by this button."),
-                        TapTarget.forView(binding.btnReset, "Reset", "When things get messed up, don't worry! this button always allows you to get a fresh start."),
-                        TapTarget.forView(binding.level, "How to identify wrong rectangles?", "If you're feeling stuck, you may get a hint by filling the board with rectangles."))
+                        TapTarget.forView(binding.count, "Counter", getResources().getString(R.string.tt1)),
+                        TapTarget.forView(binding.time, "Stopwatch", getResources().getString(R.string.tt2)),
+                        TapTarget.forView(binding.btnPause, "Pause", getResources().getString(R.string.tt3)),
+                        TapTarget.forView(binding.btnReset, "Reset", getResources().getString(R.string.tt4)),
+                        TapTarget.forView(binding.level, getResources().getString(R.string.tt5), getResources().getString(R.string.tt51)))
                 .listener(new TapTargetSequence.Listener() {
                     // This listener will tell us when interesting(tm) events happen in regards
                     // to the sequence
@@ -399,9 +401,11 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
             binding.chara.setVisibility(View.VISIBLE);
             binding.chara.startAnimation(slideinAnimation);
             binding.tvTutor.setVisibility(View.VISIBLE);
-            binding.tvTutor.setText("Oops, that's wrong!");
+            binding.tvTutor.setText(getResources().getString(R.string.tutorWrong));
             binding.tvTutor.startAnimation(slideinAnimation);
             startHandler();
+        }else{
+            binding.tvTutor.setText(getResources().getString(R.string.tutorWrong));
         }
         for(int i= 0; i< wrongRect.size(); i++){
             int left= wrongRect.get(i).getLeft();
@@ -441,12 +445,12 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         if(isValid) {
             if(isTutorial()){
                 if(tutorialCount==8){
-                    this.binding.tvTutor.setText(getString(R.string.tutor8));
+                    this.binding.tvTutor.setText(getResources().getString(R.string.tutor8));
                     this.binding.nextBtn.setVisibility(View.VISIBLE);
                     tutorialCount++;
                 }
                 if(tutorialCount==10){
-                    this.binding.tvTutor.setText(getString(R.string.tutor10));
+                    this.binding.tvTutor.setText(getResources().getString(R.string.tutor10));
                     this.binding.nextBtn.setVisibility(View.VISIBLE);
                     tutorialCount++;
                 }
@@ -616,35 +620,35 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,View
         if(view == binding.nextBtn){
             Log.d("TAG", "onClick: "+tutorialCount);
             if(tutorialCount == 1){
-                this.binding.tvTutor.setText(getString(R.string.tutor1));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor1));
             }
             if(tutorialCount == 2){
-                this.binding.tvTutor.setText(getString(R.string.tutor2));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor2));
                 this.binding.box.setVisibility(View.VISIBLE);
                 this.binding.count.setVisibility(View.VISIBLE);
                 initCanvas();
             }
             if(tutorialCount == 3){
-                this.binding.tvTutor.setText(getString(R.string.tutor3));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor3));
                 initCanvas();
 
             }
             if(tutorialCount == 4){
-                this.binding.tvTutor.setText(getString(R.string.tutor4));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor4));
             }
             if(tutorialCount == 5){
-                this.binding.tvTutor.setText(getString(R.string.tutor5));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor5));
             }
             if(tutorialCount == 6){
-                this.binding.tvTutor.setText(getString(R.string.tutor6));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor6));
             }
             if(tutorialCount == 7){
-                this.binding.tvTutor.setText(getString(R.string.tutor7));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor7));
                 initCanvas();
                 this.binding.nextBtn.setVisibility(View.GONE);
             }
             if(tutorialCount == 9){
-                this.binding.tvTutor.setText(getString(R.string.tutor9));
+                this.binding.tvTutor.setText(getResources().getString(R.string.tutor9));
                 tutorialLevel++;
                 initCanvas();
                 this.binding.nextBtn.setVisibility(View.GONE);

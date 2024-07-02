@@ -17,7 +17,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Easy"
+        android:text="@string/easyBtn"
         android:id="@+id/btn5"
         android:layout_below="@id/logo"
         android:drawableLeft="@drawable/button_play_default24"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/button_play_default24"
-        android:text="Medium"
+        android:text="@string/mediumBtn"
         android:id="@+id/btn10"
         android:layout_below="@id/btn5">
     </Button>
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/button_play_default24"
-        android:text="Hard"
+        android:text="@string/hardBtn"
         android:textAlignment="center"
         android:id="@+id/btn15"
         android:layout_below="@id/btn10">

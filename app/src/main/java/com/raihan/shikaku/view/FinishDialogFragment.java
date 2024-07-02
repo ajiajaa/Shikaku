@@ -60,7 +60,7 @@ public class FinishDialogFragment extends DialogFragment implements View.OnClick
             binding.congrats.setVisibility(View.GONE);
             binding.nextBtn.setVisibility(View.GONE);
         }else{
-            this.binding.congrats.setText(this.binding.congrats.getText().toString()+waktuText);
+            this.binding.congrats.setText(this.binding.congrats.getText().toString()+" "+waktuText);
             this.binding.btnPlay.setVisibility(View.GONE);
             this.binding.pause.setVisibility(View.GONE);
         }

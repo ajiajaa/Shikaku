@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shikaku</string>
+    <string name="hello_blank_fragment">Hello, blank fragment</string>
+    <string name="tutor0">Halo! Nama saya WOVEY! Saya akan membantu kamu memahami apa itu \'Shikaku\'!</string>
+    <string name="tutor1">Jadi, Shikaku adalah permainan papan yang berisi banyak sel, yang beberapa selnya memiliki angka di dalamnya.</string>
+    <string name="tutor2">Seperti contoh di bawah ini!</string>
+    <string name="tutor3">Untuk tutorial ini, mari kita gunakan papan berukuran 2x2.</string>
+    <string name="tutor4">Tugas kamu adalah membagi papan menjadi banyak \'persegi\'.</string>
+    <string name="tutor5">Setiap persegi yang dibuat hanya berisi SATU angka.</string>
+    <string name="tutor6">Angka tersebut menunjukkan berapa banyak sel yang terdapat dalam persegi panjang tersebut.</string>
+    <string name="tutor7">Cobalah untuk membuat persegi panjang dalam puzzle ini dengan menggeser jari kamu dan selesaikanlah.</string>
+    <string name="tutor8">Bagus! Kamu bisa melakukannya!</string>
+    <string name="tutor9">Sekarang, selesaikan puzzle ini!</string>
+    <string name="tutor10">Kamu hebat! Sekarang kamu siap untuk menaklukkan Shikaku!</string>
+    <string name="easyBtn">Mudah</string>
+    <string name="mediumBtn">Sedang</string>
+    <string name="hardBtn">Sulit</string>
+    <string name="tt1">Elemen ini akan membantu kamu mengetahui ukuran persegi yang kamu buat.</string>
+    <string name="tt2">Elemen ini akan membantu kamu mengetahui berapa lama kamu telah bermain.</string>
+    <string name="tt3">Jika kamu ingin beristirahat sejenak, tekan tombol ini.</string>
+    <string name="tt4">Apabila terjadi kekacauan, jangan khawatir, tombol ini selalu memungkinkan kamu untuk memulai kembali dari awal.</string>
+    <string name="tt5">Bagaimana cara mengidentifikasi persegi yang salah?</string>
+    <string name="tt51">Jika kamu merasa buntu, kamu bisa mendapatkan petunjuk dengan mengisi penuh bidang papan dengan persegi.</string>
+    <string name="rules1">1. Area persegi yang dibagi harus berisi satu angka yang menunjukkan luas area persegi.</string>
+    <string name="rules2">2. Luas persegi yang dibagi harus sama dengan angka yang ada di dalamnya.</string>
+    <string name="rules3">3. Tidak ada area persegi yang dibagi yang tumpang tindih dengan area persegi yang dibagi lainnya.</string>
+    <string name="congrats">"Selamat! kamu berhasil menaklukkan puzzle dalam"</string>
+    <string name="tutorWrong">Salah! Ingat, Setiap persegi panjang hanya berisi SATU angka dan ukuran persegi panjang sesuai dengan angka tersebut.</string>
+</resources>

@@ -21,17 +21,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1. The divided square areas must contain a single number indicating the area of the square region."
+            android:text="@string/rules1"
             android:textColor="?attr/colorSecondary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2. The area of the divided square must be equal to the number contained within it."
+            android:text="@string/rules2"
             android:textColor="?attr/colorSecondary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3. No divided square area should overlap with another divided square area."
+            android:text="@string/rules3"
             android:textColor="?attr/colorSecondary"/>
     </LinearLayout>
     <LinearLayout
@@ -40,6 +40,7 @@
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
+        android:id="@+id/box1"
         android:layout_below="@id/box">
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Muhammad Fazri Raihan PB"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textColor="?attr/colorSecondary"/>
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dr. rer. nat. Cecilia E Nugraheni"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textColor="?attr/colorSecondary"/>
         <TextView
             android:layout_width="wrap_content"
@@ -77,8 +78,38 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Husnul Hakim, M.T."
-            android:layout_marginLeft="20dp"
+            android:text="Husnul Hakim, M.T. \nDra. Rosa de Lima Endang Padmowati, M.T. "
+            android:layout_marginLeft="10dp"
             android:textColor="?attr/colorSecondary"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/box1"
+        android:id="@+id/box2"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Choose Language / Pilih Bahasa:"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="English"
+                android:id="@+id/btn_english"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Indonesia"
+                android:id="@+id/btn_Indonesia"/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

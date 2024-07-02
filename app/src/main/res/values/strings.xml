@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Shikaku</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello, blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello, blank fragment</string>
     <string name="tutor0">Hello! My name is WOVEY! I\'ll help you figure out what \'Shikaku\' is!</string>
     <string name="tutor1">So, Shikaku is a board game that contains many cells with numbers in them.</string>
     <string name="tutor2">Like the example below!</string>
@@ -14,4 +14,25 @@
     <string name="tutor8">Nice! You\'ve got this!</string>
     <string name="tutor9">Now, solve this puzzle!</string>
     <string name="tutor10">You\'re a rock! Now you\'re ready to conquer Shikaku!</string>
+    <string name="tutorWrong">You\'re wrong! Remember, Each rectangle contains only ONE number and the size of the rectangle matches the number.</string>
+
+    <string name="easyBtn">Easy</string>
+    <string name="mediumBtn">Medium</string>
+    <string name="hardBtn">Hard</string>
+
+    <string name="tt1">This element will help you to know the size of the rectangle that you are creating.</string>
+    <string name="tt2">This element will help you to know how long you have been playing.</string>
+    <string name="tt3">If you want to get a rest, I got you covered by this button.</string>
+    <string name="tt4">When things get messed up, don\'t worry! this button always allows you to get a fresh start.</string>
+    <string name="tt5">How to identify wrong rectangles?</string>
+    <string name="tt51">If you\'re feeling stuck, you may get a hint by filling the board with rectangles.</string>
+
+    <string name="rules1">"1. The divided square areas must contain a single number indicating the area of the square region.</string>
+    <string name="rules3">3. No divided square area should overlap with another divided square area.</string>
+    <string name="rules2">2. The area of the divided square must be equal to the number contained within it.</string>
+
+
+    <string name="congrats">Congratulations! You have conquered the puzzle in</string>
+
+
 </resources>
